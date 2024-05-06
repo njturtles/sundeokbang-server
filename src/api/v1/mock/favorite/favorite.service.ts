@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class MockService {
+export class MockFavoriteService {
   async list(
     page: number,
     size: number,
@@ -9,13 +9,8 @@ export class MockService {
     const rows = [
       {
         id: 1,
-        name: '서기문',
-        email: 'gimun08@naver.com',
-        password: 'scnu20211207',
-        phone: '01068603458',
-        school: '순천대학교',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        user: 1,
+        room: 1,
       },
     ];
     return { rows, count: rows.length };
