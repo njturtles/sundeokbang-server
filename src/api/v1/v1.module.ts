@@ -8,8 +8,8 @@ import { FavoriteController } from './favorite/favorite.controller';
 import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
-  controllers: [UserController, RoomController, FavoriteController],
-  imports: [UserModule, RoomModule, FavoriteModule],
-  providers: [FavoriteService],
+    controllers: [UserController, RoomController, FavoriteController],
+    imports: [UserModule, RoomModule, FavoriteModule],
+    providers: [FavoriteService],
 })
 export class V1Module {}

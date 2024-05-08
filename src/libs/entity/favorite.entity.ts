@@ -4,14 +4,14 @@ import { Room } from './room.entity';
 
 @Entity('favorites')
 export class Favorite {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @ManyToOne(() => User, (user) => user.favorites)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
+    @ManyToOne(() => User, (user) => user.favorites)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
 
-  @ManyToOne(() => Room, (room) => room.favorites)
-  @JoinColumn({ name: 'room_id' })
-  room: Room;
+    @ManyToOne(() => Room, (room) => room.favorites)
+    @JoinColumn({ name: 'room_id' })
+    room: Room;
 }

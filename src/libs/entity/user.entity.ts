@@ -3,33 +3,33 @@ import { Favorite } from './favorite.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column({ unique: true })
-  email: string;
+    @Column({ unique: true })
+    email: string;
 
-  @Column()
-  password: string;
+    @Column()
+    password: string;
 
-  @Column()
-  phone: string;
+    @Column()
+    phone: string;
 
-  @Column()
-  school: string;
+    @Column()
+    school: string;
 
-  @Column()
-  createdAt: Date;
+    @Column()
+    createdAt: Date;
 
-  @Column({ nullable: true })
-  deletedAt: Date;
+    @Column({ nullable: true })
+    deletedAt: Date;
 
-  @Column()
-  updatedAt: Date;
+    @Column()
+    updatedAt: Date;
 
-  @OneToMany(() => Favorite, (favorite) => favorite.user)
-  favorites: Favorite[];
+    @OneToMany(() => Favorite, (favorite) => favorite.user)
+    favorites: Favorite[];
 }

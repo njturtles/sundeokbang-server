@@ -3,75 +3,81 @@ import { Favorite } from './favorite.entity';
 
 @Entity('rooms')
 export class Room {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column()
-  address: string;
+    @Column()
+    address: string;
 
-  @Column()
-  contractType: string;
+    @Column()
+    latitude: number;
 
-  @Column()
-  deposit: number;
+    @Column()
+    longitude: number;
 
-  @Column()
-  cost: number;
+    @Column()
+    contractType: string;
 
-  @Column()
-  term: string;
+    @Column()
+    deposit: number;
 
-  @Column()
-  maintenanceCost: number;
+    @Column()
+    cost: number;
 
-  @Column({ nullable: true })
-  commonArea: string;
+    @Column()
+    term: string;
 
-  @Column()
-  type: string;
+    @Column()
+    maintenanceCost: number;
 
-  @Column()
-  exclusiveArea: number;
+    @Column({ nullable: true })
+    commonArea: string;
 
-  @Column()
-  parking: boolean;
+    @Column()
+    type: string;
 
-  @Column()
-  heatingSystem: string;
+    @Column()
+    exclusiveArea: number;
 
-  @Column()
-  furniture: string;
+    @Column()
+    parking: boolean;
 
-  @Column()
-  appliances: string;
+    @Column()
+    heatingSystem: string;
 
-  @Column()
-  prevention: string;
+    @Column()
+    furniture: string;
 
-  @Column({ nullable: true })
-  etc: string;
+    @Column()
+    appliances: string;
 
-  @Column({ type: 'text', nullable: true })
-  detail: string;
+    @Column()
+    prevention: string;
 
-  @Column()
-  phone: string;
+    @Column({ nullable: true })
+    etc: string;
 
-  @Column()
-  owner: string;
+    @Column({ type: 'text', nullable: true })
+    detail: string;
 
-  @Column()
-  createdAt: Date;
+    @Column()
+    phone: string;
 
-  @Column({ nullable: true })
-  deletedAt: Date;
+    @Column()
+    owner: string;
 
-  @Column()
-  updatedAt: Date;
+    @Column()
+    createdAt: Date;
 
-  @OneToMany(() => Favorite, (favorite) => favorite.room)
-  favorites: Favorite[];
+    @Column({ nullable: true })
+    deletedAt: Date;
+
+    @Column()
+    updatedAt: Date;
+
+    @OneToMany(() => Favorite, (favorite) => favorite.room)
+    favorites: Favorite[];
 }
