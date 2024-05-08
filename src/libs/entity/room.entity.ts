@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    DeleteDateColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 import { Favorite } from './favorite.entity';
 
 @Entity('rooms')
@@ -12,10 +20,10 @@ export class Room {
     @Column()
     address: string;
 
-    @Column()
+    @Column({ nullable: true })
     latitude: number;
 
-    @Column()
+    @Column({ nullable: true })
     longitude: number;
 
     @Column()
@@ -69,13 +77,13 @@ export class Room {
     @Column()
     owner: string;
 
-    @Column()
+    @CreateDateColumn()
     createdAt: Date;
 
-    @Column({ nullable: true })
+    @DeleteDateColumn({ nullable: true })
     deletedAt: Date;
 
-    @Column()
+    @UpdateDateColumn({ nullable: true })
     updatedAt: Date;
 
     @OneToMany(() => Favorite, (favorite) => favorite.room)

@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    JoinColumn,
+    DeleteDateColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 import { User } from './user.entity';
 import { Room } from './room.entity';
 
@@ -14,4 +22,13 @@ export class Favorite {
     @ManyToOne(() => Room, (room) => room.favorites)
     @JoinColumn({ name: 'room_id' })
     room: Room;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @DeleteDateColumn({ nullable: true })
+    deletedAt: Date;
+
+    @UpdateDateColumn({ nullable: true })
+    updatedAt: Date;
 }

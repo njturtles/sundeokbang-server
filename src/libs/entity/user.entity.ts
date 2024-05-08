@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    CreateDateColumn,
+    DeleteDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 import { Favorite } from './favorite.entity';
 
 @Entity('users')
@@ -21,13 +29,13 @@ export class User {
     @Column()
     school: string;
 
-    @Column()
+    @CreateDateColumn()
     createdAt: Date;
 
-    @Column({ nullable: true })
+    @DeleteDateColumn({ nullable: true })
     deletedAt: Date;
 
-    @Column()
+    @UpdateDateColumn({ nullable: true })
     updatedAt: Date;
 
     @OneToMany(() => Favorite, (favorite) => favorite.user)
