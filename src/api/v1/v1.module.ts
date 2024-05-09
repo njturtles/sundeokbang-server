@@ -6,10 +6,13 @@ import { RoomModule } from './room/room.module';
 import { FavoriteService } from './favorite/favorite.service';
 import { FavoriteController } from './favorite/favorite.controller';
 import { FavoriteModule } from './favorite/favorite.module';
+import { MockModule } from './mock/mock.module';
+import { MockController } from './mock/mock.controller';
+import { MockService } from './mock/mock.service';
 
 @Module({
-    controllers: [UserController, RoomController, FavoriteController],
-    imports: [UserModule, RoomModule, FavoriteModule],
-    providers: [FavoriteService],
+  controllers: [UserController, RoomController, FavoriteController, MockController],
+  imports: [UserModule, RoomModule, FavoriteModule, MockModule],
+  providers: [FavoriteService, MockService],
 })
 export class V1Module {}
