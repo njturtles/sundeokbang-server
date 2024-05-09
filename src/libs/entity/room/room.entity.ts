@@ -1,19 +1,9 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToMany,
-    DeleteDateColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-} from 'typeorm';
-import { Favorite } from './favorite.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { Favorite } from '../favorite/favorite.entity';
+import { BaseTimeEntity } from '../BaseTimeEntity';
 
 @Entity('rooms')
-export class Room {
-    @PrimaryGeneratedColumn()
-    id: number;
-
+export class Room extends BaseTimeEntity {
     @Column()
     name: string;
 
@@ -76,15 +66,6 @@ export class Room {
 
     @Column()
     owner: string;
-
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @DeleteDateColumn({ nullable: true })
-    deletedAt: Date;
-
-    @UpdateDateColumn({ nullable: true })
-    updatedAt: Date;
 
     @OneToMany(() => Favorite, (favorite) => favorite.room)
     favorites: Favorite[];
