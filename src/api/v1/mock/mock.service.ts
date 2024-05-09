@@ -2,271 +2,236 @@ import { Injectable, NotFoundException, Param } from '@nestjs/common';
 
 @Injectable()
 export class MockService {
-  private users = [
-    {
-      id_: 1,
-      name: '서기문',
-      email: 'gimun08@naver.com',
-      password: 'scnu20211207',
-      phone: '01068603458',
-      school: '순천대학교',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id_: 2,
-      name: '정다운',
-      email: 'ekdns@naver.com',
-      password: 'scnu1111',
-      phone: '01099578220',
-      school: '순천대학교',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
+    private users = [
+        {
+            _id: 1,
+            name: '서기문',
+            email: 'gimun08@naver.com',
+            password: 'scnu20211207',
+            phone: '01068603458',
+            school: '순천대학교',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+        {
+            _id: 2,
+            name: '정다운',
+            email: 'ekdns@naver.com',
+            password: 'scnu1111',
+            phone: '01099578220',
+            school: '순천대학교',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+    ];
 
-  private rooms = [
-    {
-      id_: 1,
-      name: '창조관', //원룸명
-      address: '전라남도 순천시 중앙로 255 순천대학교 창조관', //주소
-      contracttype: '월세', //거래종류
-      deposit: 1000000, //보증금
-      cost: 300000, //월세
-      term: '1년', //계약기간
-      maintenanceCost: 10000, //관리비
-      commonArea: '주방', //세대 공동구역
-      type: '2인실', //방타입
-      exclusiveArea: 16.95, //전용면적
-      parking: true, //주차
-      heatingSystem: '보일러', //난방방식
-      furnitrue: '침대', //가구옵션
-      appliances: '전자레인지', //가전옵션
-      prevention: 'cctv', //방범옵션
-      etc: '와이파이', //기타옵션
-      detail: '좋은곳이에요^^ 꼭 들어오세요!!', //상세정보
-      phone: '01012341234', //사장번호
-      owner: '순천대학교', //등기상 소유자
-      latitude: 34.967338, //위도
-      longitude: 127.479688, //경도
-      imageurl:
-        'https://cdn.ggumim.co.kr/cache/star/600/76e8aa01-6ecc-4cef-9122-47cfb38d71dd.jpg',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id_: 2,
-      name: '투탑원룸', //원룸명
-      address: '전라남도 순천시 순천대3길 13-35', //주소
-      contracttype: '월세', //거래종류
-      deposit: 2000000, //보증금
-      cost: 400000, //월세
-      term: '1년', //계약기간
-      maintenanceCost: 10000, //관리비
-      commonArea: '현관', //세대 공용구역
-      type: '1인실', //방타입
-      exclusiveArea: 25, //전용면적
-      parking: true, //주차
-      heatingSystem: '보일러', //난방방식
-      furnitrue: '침대,옷장', //가구옵션
-      appliances: '전자레인지,TV', //가전옵션
-      prevention: 'cctv', //방범옵션
-      etc: '와이파이', //기타옵션
-      detail: '언제든지 전화주세요!!', //상세정보
-      phone: '01011112222', //사장번호
-      owner: '홍길동', //등기상 소유자
-      latitude: 34.970461, //위도
-      longitude: 127.484387, //경도
-      imageurl:
-        'https://cdn.ggumim.co.kr/cache/star/600/20210616131929cWl6u2N2F1.jpg',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id_: 3,
-      name: '트윈스빌', //원룸명
-      address: '전라남도 순천시 석현동 217-1', //주소
-      contracttype: '월세', //거래종류
-      deposit: 1000000, //보증금
-      cost: 350000, //월세
-      term: '1년', //계약기간
-      maintenanceCost: 30000, //관리비
-      commonArea: '현관', //세대 공용구역
-      type: '1인실', //방타입
-      exclusiveArea: 27, //전용면적
-      parking: true, //주차
-      heatingSystem: '보일러', //난방방식
-      furnitrue: '침대,옷장', //가구옵션
-      appliances: '전자레인지,TV', //가전옵션
-      prevention: 'cctv', //방범옵션
-      etc: '와이파이', //기타옵션
-      detail: '문의사항은 문자로 주세요~', //상세정보
-      phone: '01034345656', //사장번호
-      owner: '이순신', //등기상 소유자
-      latitude: 34.97152, //위도
-      longitude: 127.484045, //경도
-      imageurl:
-        'https://i0.wp.com/www.gangnamoneroom.com/wp-content/uploads/2023/09/1room.jpg?resize=480%2C360',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id_: 4,
-      name: '힐스빌', //원룸명
-      address: '전라남도 순천시 석현동 263', //주소
-      contracttype: '월세', //거래종류
-      deposit: 1000000, //보증금
-      cost: 370000, //월세
-      term: '1년', //계약기간
-      maintenanceCost: 20000, //관리비
-      commonArea: '현관', //세대 공용구역
-      type: '1인실', //방타입
-      exclusiveArea: 30.23, //전용면적
-      parking: true, //주차
-      heatingSystem: '보일러', //난방방식
-      furnitrue: '침대,옷장', //가구옵션
-      appliances: '전자레인지,TV', //가전옵션
-      prevention: 'cctv', //방범옵션
-      etc: '와이파이', //기타옵션
-      detail: '오셔서 둘러보세요~~', //상세정보
-      phone: '01018187777', //사장번호
-      owner: '엄준식', //등기상 소유자
-      latitude: 34.9713, //위도
-      longitude: 127.477253, //경도
-      imageurl:
-        'https://static.hyundailivart.co.kr/upload_mall/board/ME00000044/B200044152/tplt/0000218011_20220320223835897.jpg/dims/autorotate/on',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id_: 5,
-      name: '에스클래스빌', //원룸명
-      address: '전라남도 순천시 북정3길 31-1', //주소
-      contracttype: '월세', //거래종류
-      deposit: 1000000, //보증금
-      cost: 500000, //월세
-      term: '1년', //계약기간
-      maintenanceCost: 20000, //관리비
-      commonArea: '현관', //세대 공용구역
-      type: '1인실', //방타입
-      exclusiveArea: 25, //전용면적
-      parking: true, //주차
-      heatingSystem: '보일러', //난방방식
-      furnitrue: '침대,옷장', //가구옵션
-      appliances: '전자레인지,TV', //가전옵션
-      prevention: 'cctv', //방범옵션
-      etc: '와이파이', //기타옵션
-      detail: '최고의 조건을 갖추고 있어요!!', //상세정보
-      phone: '0104318765', //사장번호
-      owner: '조용원', //등기상 소유자
-      latitude: 34.965131, //위도
-      longitude: 127.48246, //경도
-      imageurl:
-        'https://cf.bstatic.com/xdata/images/hotel/max1024x768/423345232.jpg?k=d52e61c4a9ff4d4b1bbf016007233d26723c954b8d2188a77e18ff80ca219c91&o=&hp=1',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
+    private rooms = [
+        {
+            _id: 1,
+            name: '창조관', //원룸명
+            address: '전라남도 순천시 중앙로 255 순천대학교 창조관', //주소
+            contracttype: '월세', //거래종류
+            deposit: 1000000, //보증금
+            cost: 300000, //월세
+            term: '1년', //계약기간
+            maintenanceCost: 10000, //관리비
+            commonArea: '주방', //세대 공동구역
+            type: '2인실', //방타입
+            exclusiveArea: 16.95, //전용면적
+            parking: true, //주차
+            heatingSystem: '보일러', //난방방식
+            furnitrue: '침대', //가구옵션
+            appliances: '전자레인지', //가전옵션
+            prevention: 'cctv', //방범옵션
+            etc: '와이파이', //기타옵션
+            detail: '좋은곳이에요^^ 꼭 들어오세요!!', //상세정보
+            phone: '01012341234', //사장번호
+            owner: '순천대학교', //등기상 소유자
+            latitude: 34.967338, //위도
+            longitude: 127.479688, //경도
+            imageurl: [
+                'https://cdn.ggumim.co.kr/cache/star/600/76e8aa01-6ecc-4cef-9122-47cfb38d71dd.jpg',
+                'https://i.namu.wiki/i/qKxcAi_HHGm1iaFqOWf8mrp5xAPjPDTOkxTtNBy5s6qpFXrL16tWL0SiYD0Z57_tLcd_EycaAerp4WtT-rtn9Q.webp',
+                'https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/snapshots/169079532059746276.jpeg?gif=1&w=480&h=480&c=c&q=80&webp=1',
+            ],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+        {
+            _id: 2,
+            name: '투탑원룸', //원룸명
+            address: '전라남도 순천시 순천대3길 13-35', //주소
+            contracttype: '월세', //거래종류
+            deposit: 2000000, //보증금
+            cost: 400000, //월세
+            term: '1년', //계약기간
+            maintenanceCost: 10000, //관리비
+            commonArea: '현관', //세대 공용구역
+            type: '1인실', //방타입
+            exclusiveArea: 25, //전용면적
+            parking: true, //주차
+            heatingSystem: '보일러', //난방방식
+            furnitrue: '침대,옷장', //가구옵션
+            appliances: '전자레인지,TV', //가전옵션
+            prevention: 'cctv', //방범옵션
+            etc: '와이파이', //기타옵션
+            detail: '언제든지 전화주세요!!', //상세정보
+            phone: '01011112222', //사장번호
+            owner: '홍길동', //등기상 소유자
+            latitude: 34.970461, //위도
+            longitude: 127.484387, //경도
+            imageurl: [
+                'https://cdn.ggumim.co.kr/cache/star/600/20210616131929cWl6u2N2F1.jpg',
+                'https://wimg.mk.co.kr/meet/neds/2021/05/image_readtop_2021_469697_16210535124645890.jpg',
+                'https://img.hankyung.com/photo/202201/01.28728932.1.jpg',
+            ],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+        {
+            _id: 3,
+            name: '트윈스빌', //원룸명
+            address: '전라남도 순천시 석현동 217-1', //주소
+            contracttype: '월세', //거래종류
+            deposit: 1000000, //보증금
+            cost: 350000, //월세
+            term: '1년', //계약기간
+            maintenanceCost: 30000, //관리비
+            commonArea: '현관', //세대 공용구역
+            type: '1인실', //방타입
+            exclusiveArea: 27, //전용면적
+            parking: true, //주차
+            heatingSystem: '보일러', //난방방식
+            furnitrue: '침대,옷장', //가구옵션
+            appliances: '전자레인지,TV', //가전옵션
+            prevention: 'cctv', //방범옵션
+            etc: '와이파이', //기타옵션
+            detail: '문의사항은 문자로 주세요~', //상세정보
+            phone: '01034345656', //사장번호
+            owner: '이순신', //등기상 소유자
+            latitude: 34.97152, //위도
+            longitude: 127.484045, //경도
+            imageurl: [
+                'https://i0.wp.com/www.gangnamoneroom.com/wp-content/uploads/2023/09/1room.jpg?resize=480%2C360',
+                'https://contents-cdn.viewus.co.kr/image/230131/443dd20c-a1a1-4464-8889-92860bb2a33d.jpeg',
+                'https://www.yyg.go.kr/www/citizen_participation/publicity/ybmodule.file/board_www/www_company_pr/1675320106.jpg',
+            ],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+        {
+            _id: 4,
+            name: '힐스빌', //원룸명
+            address: '전라남도 순천시 석현동 263', //주소
+            contracttype: '월세', //거래종류
+            deposit: 1000000, //보증금
+            cost: 370000, //월세
+            term: '1년', //계약기간
+            maintenanceCost: 20000, //관리비
+            commonArea: '현관', //세대 공용구역
+            type: '1인실', //방타입
+            exclusiveArea: 30.23, //전용면적
+            parking: true, //주차
+            heatingSystem: '보일러', //난방방식
+            furnitrue: '침대,옷장', //가구옵션
+            appliances: '전자레인지,TV', //가전옵션
+            prevention: 'cctv', //방범옵션
+            etc: '와이파이', //기타옵션
+            detail: '오셔서 둘러보세요~~', //상세정보
+            phone: '01018187777', //사장번호
+            owner: '엄준식', //등기상 소유자
+            latitude: 34.9713, //위도
+            longitude: 127.477253, //경도
+            imageurl: [
+                'https://static.hyundailivart.co.kr/upload_mall/board/ME00000044/B200044152/tplt/0000218011_20220320223835897.jpg/dims/autorotate/on',
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScz3bQCkLzBedzXTzVQtW3hLtOGNn8vt95AXAOSYszDg&s',
+                'https://dimg.donga.com/wps/NEWS/IMAGE/2021/07/07/107834624.2.jpg',
+            ],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+        {
+            _id: 5,
+            name: '에스클래스빌', //원룸명
+            address: '전라남도 순천시 북정3길 31-1', //주소
+            contracttype: '월세', //거래종류
+            deposit: 1000000, //보증금
+            cost: 500000, //월세
+            term: '1년', //계약기간
+            maintenanceCost: 20000, //관리비
+            commonArea: '현관', //세대 공용구역
+            type: '1인실', //방타입
+            exclusiveArea: 25, //전용면적
+            parking: true, //주차
+            heatingSystem: '보일러', //난방방식
+            furnitrue: '침대,옷장', //가구옵션
+            appliances: '전자레인지,TV', //가전옵션
+            prevention: 'cctv', //방범옵션
+            etc: '와이파이', //기타옵션
+            detail: '최고의 조건을 갖추고 있어요!!', //상세정보
+            phone: '0104318765', //사장번호
+            owner: '조용원', //등기상 소유자
+            latitude: 34.965131, //위도
+            longitude: 127.48246, //경도
+            imageurl: [
+                'https://cf.bstatic.com/xdata/images/hotel/max1024x768/423345232.jpg?k=d52e61c4a9ff4d4b1bbf016007233d26723c954b8d2188a77e18ff80ca219c91&o=&hp=1',
+                'https://cdn.jjan.kr/data2/content/image/2022/08/21/.cache/512/20220821580252.jpg',
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMkQUrYMqbJ8Ctvsz4uxsbi-fjL0msmu8vw489jWkhSw&s',
+            ],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+    ];
 
-  private favorites = [];
-
-  //유저조회
-  async listUsers(
-    page: number,
-    size: number,
-  ): Promise<{ rows: any[]; count: number }> {
-    const startIndex = (page - 1) * size;
-    const endIndex = startIndex + size;
-    const rows = this.users.slice(startIndex, endIndex);
-    return { rows, count: this.users.length };
-  }
-
-  //원룸조회
-  async listRooms(
-    page: number,
-    size: number,
-  ): Promise<{ rows: any[]; count: number }> {
-    const startIndex = (page - 1) * size;
-    const endIndex = startIndex + size;
-    const rows = this.rooms.slice(startIndex, endIndex);
-    return { rows, count: this.rooms.length };
-  }
-
-  //특정원룸 정보
-  async getRoomById(id: number): Promise<{
-    id: number;
-    name: string;
-    deposit: number;
-    cost: number;
-    latitude: number;
-    longitude: number;
-  } | null> {
-    const room = this.rooms.find((room) => room.id_ === id);
-    if (room) {
-      return {
-        id: room.id_,
-        name: room.name,
-        deposit: room.deposit,
-        cost: room.cost,
-        latitude: room.latitude,
-        longitude: room.longitude,
-      };
+    //원룸상세보기
+    async getRoomById(id: number): Promise<any> {
+        const room = this.rooms.find((room) => room._id === id);
+        if (!room) {
+            throw new NotFoundException('해당 원룸을 찾을 수 없습니다.');
+        }
+        return room;
     }
-    return null;
-  }
 
-  // 회원정보 수정
-  async updateUser(id: number, userData: Partial<any>): Promise<any> {
-    const userIndex = this.users.findIndex((user) => user.id_ === id);
-    if (userIndex === -1) {
-      throw new Error(`User with ID ${id} not found`);
+    // 사용자 위치에서 가까운 순서대로 원룸 목록을 반환
+    async getRoomsByProximity(
+        userLatitude: number,
+        userLongitude: number,
+    ): Promise<any[]> {
+        return this.rooms
+            .map((room) => ({
+                ...room,
+                distance: this.calculateDistance(
+                    userLatitude,
+                    userLongitude,
+                    room.latitude,
+                    room.longitude,
+                ),
+            }))
+            .sort((a, b) => a.distance - b.distance);
     }
-    this.users[userIndex] = {
-      ...this.users[userIndex],
-      ...userData,
-      updatedAt: new Date(),
-    };
-    return this.users[userIndex];
-  }
 
-  //회원가입
-  async createUser(userData: any): Promise<any> {
-    const newUserId = this.users.length + 1;
-
-    const newUser = {
-      id: newUserId,
-      ...userData,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    this.users.push(newUser);
-
-    return newUser;
-  }
-
-  //즐겨찾기 생성
-  async addFavorite(userId: number, roomId: number): Promise<void> {
-    const existingFavorite = this.favorites.find(
-      (fav) => fav.userId === userId && fav.roomId === roomId,
-    );
-
-    if (!existingFavorite) {
-      this.favorites.push({ userId, roomId });
+    // 두 점 사이의 거리를 계산하는 함수 (위도, 경도 기반)
+    calculateDistance(
+        latitude1: number,
+        longitude1: number,
+        latitude2: number,
+        longitude2: number,
+    ): number {
+        const R = 6371; // 지구 반경 (킬로미터)
+        const dLat = this.deg2rad(latitude2 - latitude1);
+        const dLon = this.deg2rad(longitude2 - longitude1);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.deg2rad(latitude1)) *
+                Math.cos(this.deg2rad(latitude2)) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // 거리 (킬로미터)
     }
-  }
 
-  //즐겨찾기 제거
-  async removeFavorite(userId: number, roomId: number): Promise<void> {
-    this.favorites = this.favorites.filter(
-      (fav) => fav.userId !== userId || fav.roomId !== roomId,
-    );
-  }
-
-  //특정유저의 즐겨찾기 조회
-  async getFavorite(userId: number): Promise<number[]> {
-    return this.favorites
-      .filter((fav) => fav.userId === userId)
-      .map((fav) => fav.roomId);
-  }
+    // 도 단위를 라디안 단위로 변환하는 함수
+    deg2rad(deg: number): number {
+        return deg * (Math.PI / 180);
+    }
 }

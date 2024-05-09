@@ -3,7 +3,7 @@ import { MockService } from './mock.service';
 import { MockController } from './mock.controller';
 
 @Module({
-  providers: [MockService],
-  controllers: [MockController],
+    providers: [MockService],
+    controllers: [MockController],
 })
 export class MockModule {}
