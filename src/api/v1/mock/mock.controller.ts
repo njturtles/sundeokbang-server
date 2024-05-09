@@ -2,17 +2,13 @@ import {
     Controller,
     Query,
     Get,
-    Put,
     Param,
-    Body,
-    Post,
-    Delete,
     NotFoundException,
     BadRequestException,
 } from '@nestjs/common';
 import { MockService } from './mock.service';
 
-@Controller('mock')
+@Controller({ path: 'mock', version: '1' })
 export class MockController {
     constructor(private readonly mockService: MockService) {}
 
@@ -33,7 +29,7 @@ export class MockController {
     }
 
     //가까운 순서대로 마커표시
-    @Get('/rooms/nearby')
+    @Get('rooms/nearby')
     async getNearbyRooms(
         @Query('latitude') latitude: string,
         @Query('longitude') longitude: string,
