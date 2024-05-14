@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { rooms } from './room';
-import { CalculatorUtil } from 'src/libs/util/calculator.util';
+import { rooms } from './room.data';
+import { CalculatorUtil } from 'src/libs/utils';
 
 @Injectable()
 export class MockService {
     private rooms: any[] = rooms;
-    private calculatorUtil: CalculatorUtil = new CalculatorUtil();
+    private readonly calculatorUtil = CalculatorUtil;
 
     //원룸상세보기
     async getRoomById(id: number): Promise<any> {
