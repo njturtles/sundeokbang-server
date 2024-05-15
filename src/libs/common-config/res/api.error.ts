@@ -1,6 +1,6 @@
 import * as os from 'os';
 import { prune } from '../../utils';
-import { RequestContextService } from 'src/libs/middleware/request-context/request-context.service';
+import { RequestContextService } from '../../middleware/request-context/request-context.service';
 
 export default class ApiError extends Error {
     public detail;

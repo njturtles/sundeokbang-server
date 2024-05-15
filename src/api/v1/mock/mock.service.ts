@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { rooms } from './room.data';
-import { CalculatorUtil } from 'src/libs/utils';
+import { CalculatorUtil } from '../../../libs/utils';
 
 @Injectable()
 export class MockService {
