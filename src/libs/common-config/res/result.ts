@@ -41,11 +41,7 @@ export class Result<T> {
                     location:
                         error?.__file__ &&
                         `${error?.__file__}:${error?.__line__} (${error?.__function__})`,
-                    trace: error?.stack,
-                    version: error?.version,
-                    build: error?.build,
                     hostname: error?.hostname,
-                    tid: error?.tid,
                 },
             };
         }

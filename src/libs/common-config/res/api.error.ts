@@ -1,34 +1,22 @@
-import tid from 'cls-rtracer';
-import fs from 'fs';
-import appRoot from 'app-root-path';
-import path from 'path';
 import * as os from 'os';
-import context from 'express-http-context';
-import ApiHeaders from './api.headers';
 import { prune } from '../../utils';
-import { ConfigService } from '@nestjs/config';
+import { RequestContextService } from 'src/libs/middleware/request-context/request-context.service';
 
 export default class ApiError extends Error {
     public detail;
-    public tid;
-    public version;
-    public build;
     public hostname;
     public __line__;
     public __function__;
     public __file__;
 
-    public constructor(
-        private readonly env: ConfigService,
-        public code: number,
-        msg?: string,
-        detail?: any,
-    ) {
+    public constructor(public code: number, msg?: string, detail?: any) {
         const message = msg;
         super(message);
 
-        const errResponse = context.get(ApiHeaders.DEBUG_RESPONSE_ERROR_LEVEL);
-        const isProd = this.env.get('NODE_ENV') === 'prod';
+        const errResponse = RequestContextService.get(
+            'DEBUG_RESPONSE_ERROR_LEVEL',
+        );
+        const isProd = process.env.NODE_ENV === 'prod';
         const isVerbose = errResponse
             ? errResponse?.includes('verbose')
             : !isProd;
@@ -47,17 +35,8 @@ export default class ApiError extends Error {
               }
             : detail;
 
-        const data = fs.readFileSync(path.join(appRoot.path, 'package.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-        });
-        const pkg = JSON.parse(data);
-
         const e = detail?.error || new Error();
-        const frame = e.stack.split('\n')[2]; // change to 3 for grandparent func
-        this.tid = tid.id();
-        this.version = pkg.version;
-        this.build = pkg.build;
+        const frame = e.stack.split('\n')[2];
         this.hostname = os.hostname();
         this.detail = prune(this.detail);
         this.__line__ = frame.split(':').reverse()[1];
