@@ -17,7 +17,7 @@ export class MockController {
     async getRoomById(@Param('id') id: string) {
         const roomId = Number(id);
         if (isNaN(roomId)) {
-            throw new NotFoundException(`유효한 ID가 아닙니다`);
+            throw new NotFoundException(`유효한 ID가 아닙니다.`);
         }
 
         const room = await this.mockService.getRoomById(roomId);
@@ -43,7 +43,7 @@ export class MockController {
             );
         }
 
-        const nearbyRooms = await this.mockService.getRoomsByProximity(
+        const nearbyRooms = await this.mockService.getRoomsNearBy(
             userLatitude,
             userLongitude,
         );
