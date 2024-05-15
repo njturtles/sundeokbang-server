@@ -37,6 +37,10 @@
             "es2015.symbol",
             "es2015.symbol.wellknown",
             "esnext.asynciterable"
-        ]
-    }
+        ],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }
