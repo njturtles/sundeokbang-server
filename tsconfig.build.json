@@ -1,18 +1,4 @@
 {
-    "compilerOptions": {
-        "incremental": true,
-        "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
-        "target": "ESNext",
-        "module": "CommonJS",
-        "outDir": "dist",
-        "rootDir": "src",
-        "strict": true,
-        "sourceMap": true,
-        "inlineSources": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": true
-    },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+    "extends": "./tsconfig.json",
+    "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }
