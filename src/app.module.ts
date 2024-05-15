@@ -12,7 +12,10 @@ import { ContextMiddleware } from './libs/middleware/request-context/context.mid
 @Module({
     imports: [
         getMysqlTypeOrmModule,
-        ConfigModule.forRoot({ isGlobal: true }),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: `.env.${process.env.NODE_ENV}`,
+        }),
         V1Module,
     ],
     controllers: [AppController],
