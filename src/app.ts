@@ -9,6 +9,8 @@ async function bootstrap() {
 
     const env = app.get(ConfigService);
     const port = env.get('APP_PORT');
+
+    app.enableCors({ credentials: true });
     app.use(httpContext.middleware);
 
     app.enableVersioning({
