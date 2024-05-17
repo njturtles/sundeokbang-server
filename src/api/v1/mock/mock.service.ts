@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { rooms } from './room.data';
 import { CalculatorUtil } from '../../../libs/utils';
+import ApiError from 'src/libs/common-config/res/api.error';
+import ApiCodes from 'src/libs/common-config/res/api.codes';
+import ApiMessages from 'src/libs/common-config/res/api.messages';
 
 @Injectable()
 export class MockService {
@@ -11,7 +14,9 @@ export class MockService {
     async getRoomById(id: number): Promise<any> {
         const room = this.rooms.find((room) => room._id === id);
         if (!room) {
-            throw new NotFoundException('해당 원룸을 찾을 수 없습니다.');
+            throw new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
+                message: '해당원룸을 찾을 수 없습니다',
+            });
         }
         return room;
     }

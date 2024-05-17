@@ -7,6 +7,9 @@ import {
     BadRequestException,
 } from '@nestjs/common';
 import { MockService } from './mock.service';
+import ApiError from 'src/libs/common-config/res/api.error';
+import ApiCodes from 'src/libs/common-config/res/api.codes';
+import ApiMessages from 'src/libs/common-config/res/api.messages';
 
 @Controller({ path: 'mock', version: '1' })
 export class MockController {
@@ -14,17 +17,9 @@ export class MockController {
 
     // 특정 원룸 조회
     @Get('room/:id')
-    async getRoomById(@Param('id') id: string) {
+    async getRoomById(@Param('id') id: number) {
         const roomId = Number(id);
-        if (isNaN(roomId)) {
-            throw new NotFoundException(`유효한 ID가 아닙니다.`);
-        }
-
         const room = await this.mockService.getRoomById(roomId);
-        if (!room) {
-            throw new NotFoundException(`해당 원룸을 찾을 수 없습니다`);
-        }
-
         return room;
     }
 
@@ -38,9 +33,9 @@ export class MockController {
         const userLongitude = parseFloat(longitude);
 
         if (isNaN(userLatitude) || isNaN(userLongitude)) {
-            throw new BadRequestException(
-                '유효한 위도와 경도를 입력해야 합니다.',
-            );
+            throw new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
+                message: '올바른 위도와 경도를 입력해주세요',
+            });
         }
 
         const nearbyRooms = await this.mockService.getRoomsNearBy(
