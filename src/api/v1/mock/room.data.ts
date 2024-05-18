@@ -13,7 +13,7 @@ export const rooms = [
         exclusiveArea: 16.95, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대', //가구옵션
+        furniture: '침대', //가구옵션
         appliances: '전자레인지', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -44,7 +44,7 @@ export const rooms = [
         exclusiveArea: 25, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -75,7 +75,7 @@ export const rooms = [
         exclusiveArea: 27, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -106,7 +106,7 @@ export const rooms = [
         exclusiveArea: 30.23, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -137,7 +137,7 @@ export const rooms = [
         exclusiveArea: 25, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
