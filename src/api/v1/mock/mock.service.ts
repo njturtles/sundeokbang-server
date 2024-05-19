@@ -10,22 +10,24 @@ export class MockService {
     private rooms: Room[] = rooms;
 
     //원룸상세보기
-    async getRoomById(id: number): Promise<Room> {
+    async getRoomsById(id: number): Promise<Room> {
         const room = this.rooms.find((room) => room._id === id);
         if (!room) {
-            throw new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
+            throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
                 message: '해당원룸을 찾을 수 없습니다',
             });
         }
         return room;
     }
 
-    //특정지역 원룸조회
-    async findByArea(area: string): Promise<Room[]> {
-        const filteredRooms = this.rooms.filter((room) => room.area === area);
+    //특정학교 원룸조회
+    async getRoomsBySchool(school: number): Promise<Room[]> {
+        const filteredRooms = this.rooms.filter(
+            (room) => room.school === school,
+        );
         if (filteredRooms.length === 0) {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
-                message: '해당 지역의 원룸을 찾을 수 없습니다',
+                message: '해당 학교의 원룸을 찾을 수 없습니다',
             });
         }
         return filteredRooms;

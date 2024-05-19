@@ -22,7 +22,7 @@ export interface Room {
     latitude: number;
     longitude: number;
     imageurl: string[];
-    area: string;
+    school: number;
     createdAt: Date;
     updatedAt: Date;
   }
