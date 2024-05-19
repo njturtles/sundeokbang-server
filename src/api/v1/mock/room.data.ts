@@ -13,7 +13,7 @@ export const rooms = [
         exclusiveArea: 16.95, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대', //가구옵션
+        furniture: '침대', //가구옵션
         appliances: '전자레인지', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -27,6 +27,7 @@ export const rooms = [
             'https://i.namu.wiki/i/qKxcAi_HHGm1iaFqOWf8mrp5xAPjPDTOkxTtNBy5s6qpFXrL16tWL0SiYD0Z57_tLcd_EycaAerp4WtT-rtn9Q.webp',
             'https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/snapshots/169079532059746276.jpeg?gif=1&w=480&h=480&c=c&q=80&webp=1',
         ],
+        school: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
@@ -44,7 +45,7 @@ export const rooms = [
         exclusiveArea: 25, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -58,6 +59,7 @@ export const rooms = [
             'https://wimg.mk.co.kr/meet/neds/2021/05/image_readtop_2021_469697_16210535124645890.jpg',
             'https://img.hankyung.com/photo/202201/01.28728932.1.jpg',
         ],
+        school: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
@@ -75,7 +77,7 @@ export const rooms = [
         exclusiveArea: 27, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -89,6 +91,7 @@ export const rooms = [
             'https://contents-cdn.viewus.co.kr/image/230131/443dd20c-a1a1-4464-8889-92860bb2a33d.jpeg',
             'https://www.yyg.go.kr/www/citizen_participation/publicity/ybmodule.file/board_www/www_company_pr/1675320106.jpg',
         ],
+        school: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
@@ -106,7 +109,7 @@ export const rooms = [
         exclusiveArea: 30.23, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -120,6 +123,7 @@ export const rooms = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScz3bQCkLzBedzXTzVQtW3hLtOGNn8vt95AXAOSYszDg&s',
             'https://dimg.donga.com/wps/NEWS/IMAGE/2021/07/07/107834624.2.jpg',
         ],
+        school: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
@@ -137,7 +141,7 @@ export const rooms = [
         exclusiveArea: 25, //전용면적
         parking: true, //주차
         heatingSystem: '보일러', //난방방식
-        furnitrue: '침대,옷장', //가구옵션
+        furniture: '침대,옷장', //가구옵션
         appliances: '전자레인지,TV', //가전옵션
         prevention: 'cctv', //방범옵션
         etc: '와이파이', //기타옵션
@@ -151,6 +155,7 @@ export const rooms = [
             'https://cdn.jjan.kr/data2/content/image/2022/08/21/.cache/512/20220821580252.jpg',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMkQUrYMqbJ8Ctvsz4uxsbi-fjL0msmu8vw489jWkhSw&s',
         ],
+        school: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
