@@ -21,7 +21,7 @@ export interface Room {
     owner: string;
     latitude: number;
     longitude: number;
-    imageurl: string[];
+    imageUrls: string[];
     school: number;
     createdAt: Date;
     updatedAt: Date;
