@@ -22,10 +22,10 @@ export const rooms = [
         owner: '순천대학교', //등기상 소유자
         latitude: 34.967338, //위도
         longitude: 127.479688, //경도
-        imageurl: [
-            'https://cdn.ggumim.co.kr/cache/star/600/76e8aa01-6ecc-4cef-9122-47cfb38d71dd.jpg',
-            'https://i.namu.wiki/i/qKxcAi_HHGm1iaFqOWf8mrp5xAPjPDTOkxTtNBy5s6qpFXrL16tWL0SiYD0Z57_tLcd_EycaAerp4WtT-rtn9Q.webp',
-            'https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/snapshots/169079532059746276.jpeg?gif=1&w=480&h=480&c=c&q=80&webp=1',
+        imageUrls: [
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%8E%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A91.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%8E%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A92.webp',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%8E%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A93.avif',
         ],
         school: 0,
         createdAt: new Date(),
@@ -54,10 +54,10 @@ export const rooms = [
         owner: '홍길동', //등기상 소유자
         latitude: 34.970461, //위도
         longitude: 127.484387, //경도
-        imageurl: [
-            'https://cdn.ggumim.co.kr/cache/star/600/20210616131929cWl6u2N2F1.jpg',
-            'https://wimg.mk.co.kr/meet/neds/2021/05/image_readtop_2021_469697_16210535124645890.jpg',
-            'https://img.hankyung.com/photo/202201/01.28728932.1.jpg',
+        imageUrls: [
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%90%E1%85%AE%E1%84%90%E1%85%A1%E1%86%B81.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%90%E1%85%AE%E1%84%90%E1%85%A1%E1%86%B82.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%90%E1%85%AE%E1%84%90%E1%85%A1%E1%86%B83.jpg',
         ],
         school: 0,
         createdAt: new Date(),
@@ -86,10 +86,10 @@ export const rooms = [
         owner: '이순신', //등기상 소유자
         latitude: 34.97152, //위도
         longitude: 127.484045, //경도
-        imageurl: [
-            'https://i0.wp.com/www.gangnamoneroom.com/wp-content/uploads/2023/09/1room.jpg?resize=480%2C360',
-            'https://contents-cdn.viewus.co.kr/image/230131/443dd20c-a1a1-4464-8889-92860bb2a33d.jpeg',
-            'https://www.yyg.go.kr/www/citizen_participation/publicity/ybmodule.file/board_www/www_company_pr/1675320106.jpg',
+        imageUrls: [
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%90%E1%85%B3%E1%84%8B%E1%85%B1%E1%86%AB%E1%84%89%E1%85%B31.webp',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%90%E1%85%B3%E1%84%8B%E1%85%B1%E1%86%AB%E1%84%89%E1%85%B32.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%90%E1%85%B3%E1%84%8B%E1%85%B1%E1%86%AB%E1%84%89%E1%85%B33.jpeg',
         ],
         school: 0,
         createdAt: new Date(),
@@ -118,10 +118,10 @@ export const rooms = [
         owner: '엄준식', //등기상 소유자
         latitude: 34.9713, //위도
         longitude: 127.477253, //경도
-        imageurl: [
-            'https://static.hyundailivart.co.kr/upload_mall/board/ME00000044/B200044152/tplt/0000218011_20220320223835897.jpg/dims/autorotate/on',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScz3bQCkLzBedzXTzVQtW3hLtOGNn8vt95AXAOSYszDg&s',
-            'https://dimg.donga.com/wps/NEWS/IMAGE/2021/07/07/107834624.2.jpg',
+        imageUrls: [
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%92%E1%85%B5%E1%86%AF%E1%84%89%E1%85%B31.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%92%E1%85%B5%E1%86%AF%E1%84%89%E1%85%B32.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%92%E1%85%B5%E1%86%AF%E1%84%89%E1%85%B33.jpg',
         ],
         school: 0,
         createdAt: new Date(),
@@ -150,10 +150,10 @@ export const rooms = [
         owner: '조용원', //등기상 소유자
         latitude: 34.965131, //위도
         longitude: 127.48246, //경도
-        imageurl: [
-            'https://cf.bstatic.com/xdata/images/hotel/max1024x768/423345232.jpg?k=d52e61c4a9ff4d4b1bbf016007233d26723c954b8d2188a77e18ff80ca219c91&o=&hp=1',
-            'https://cdn.jjan.kr/data2/content/image/2022/08/21/.cache/512/20220821580252.jpg',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMkQUrYMqbJ8Ctvsz4uxsbi-fjL0msmu8vw489jWkhSw&s',
+        imageUrls: [
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%8B%E1%85%A6%E1%84%89%E1%85%B3.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%8B%E1%85%A6%E1%84%89%E1%85%B32.jpeg',
+            'https://sundeokbang-bucket.s3.ap-northeast-2.amazonaws.com/images/%E1%84%8B%E1%85%A6%E1%84%89%E1%85%B33.jpeg',
         ],
         school: 0,
         createdAt: new Date(),

@@ -1,6 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
-import { MockService } from './mock.service';
-import { Room } from './room.interface';
+import { MockService } from 'src/api/v1/mock/mock.service';
 
 @Controller({ path: 'mock', version: '1' })
 export class MockController {
@@ -17,7 +16,14 @@ export class MockController {
     @Get('rooms/:school')
     async getRoomsBySchool(
         @Param('school', ParseIntPipe) school: number,
-    ): Promise<Room[]> {
+    ): Promise<
+        {
+            name: string;
+            address: string;
+            deposit: number;
+            cost: number;
+        }[]
+    > {
         const rooms = await this.mockService.getRoomsBySchool(school);
         return rooms;
     }
