@@ -1,5 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
-import { MockService } from 'src/api/v1/mock/mock.service';
+import { MockService } from './mock.service';
 
 @Controller({ path: 'mock', version: '1' })
 export class MockController {

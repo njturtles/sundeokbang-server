@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { rooms } from 'src/api/v1/mock/room.data';
-import ApiError from 'src/libs/common-config/res/api.error';
-import ApiCodes from 'src/libs/common-config/res/api.codes';
-import ApiMessages from 'src/libs/common-config/res/api.messages';
-import { Room } from 'src/api/v1/mock/room.interface';
+import { rooms } from './room.data';
+import ApiError from '../../../libs/common-config/res/api.error';
+import ApiCodes from '../../../libs/common-config/res/api.codes';
+import ApiMessages from '../../../libs/common-config/res/api.messages';
+import { Room } from './room.interface';
 
 @Injectable()
 export class MockService {
