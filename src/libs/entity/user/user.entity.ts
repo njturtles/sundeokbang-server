@@ -11,12 +11,6 @@ export class User extends BaseTimeEntity {
     @Column({ unique: true })
     email: string;
 
-    @Column()
-    password: string;
-
-    @Column()
-    phone: string;
-
     @OneToMany(() => Favorite, (favorite) => favorite.user)
     favorites: Favorite[];
 
