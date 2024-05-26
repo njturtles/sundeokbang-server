@@ -29,7 +29,14 @@ export class AuthService {
 
     getCookie(name: string, value: string, options: Record<string, any> = {}) {
         return {
-            [name]: { value, options },
+            [name]: {
+                value,
+                options: {
+                    ...options,
+                    httpOnly: true,
+                    domain: this.env.get<string>('COOKIE_DOMAIN'),
+                },
+            },
         };
     }
 }
