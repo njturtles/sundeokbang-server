@@ -8,10 +8,10 @@ export class University extends BaseTimeEntity {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ type: 'decimal', precision: 12, scale: 6 })
     latitude: number;
 
-    @Column()
+    @Column({ type: 'decimal', precision: 12, scale: 6 })
     longtitude: number;
 
     @OneToMany(() => User, (user) => user.university)
