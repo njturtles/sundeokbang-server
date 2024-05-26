@@ -7,7 +7,7 @@ import { Payload } from './jwt/jwt.payload';
 import { AuthService } from './auth.service';
 import { User } from '../../../libs/entity/user/user.entity';
 
-@Controller('auth')
+@Controller({ path: 'auth', version: '1' })
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
