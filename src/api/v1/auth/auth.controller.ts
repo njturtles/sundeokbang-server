@@ -29,12 +29,9 @@ export class AuthController {
         const accessToken = this.authService.signToken(payload);
 
         return {
-            cookies: {
-                user: {
-                    value: accessToken,
-                    options: { httpOnly: true },
-                },
-            },
+            cookies: this.authService.getCookie('user', accessToken, {
+                httpOnly: true,
+            }),
         };
     }
 
@@ -46,8 +43,8 @@ export class AuthController {
 
         const updateUser = await this.userService.updateUserInfo(
             userPayload.providerId,
-            userName,
             university,
+            userName,
         );
 
         const payload: Payload = this.authService.createPayload(updateUser);
@@ -55,12 +52,20 @@ export class AuthController {
         const accessToken = this.authService.signToken(payload);
 
         return {
-            cookies: {
-                user: {
-                    value: accessToken,
-                    options: { httpOnly: true },
-                },
-            },
+            cookies: this.authService.getCookie('user', accessToken, {
+                httpOnly: true,
+            }),
+        };
+    }
+
+    @Post('logout')
+    @UseGuards(JwtAuthGuard)
+    async logout() {
+        return {
+            cookies: this.authService.getCookie('user', '', {
+                httpOnly: true,
+                expires: new Date(0),
+            }),
         };
     }
 }

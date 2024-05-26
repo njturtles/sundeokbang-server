@@ -28,20 +28,26 @@ export class UserService {
 
     async updateUserInfo(
         providerId: string,
-        userName: string,
         university: string,
+        userName?: string,
     ) {
         const user = await this.findOneByProviderId(providerId);
-        user.name = userName;
-        user.university = await this.userRepository.manager
+
+        if (userName) {
+            user.name = userName;
+        }
+
+        const universityInfo = await this.userRepository.manager
             .getRepository(University)
             .findOne({ where: { name: university } });
 
-        if (!university) {
+        if (!universityInfo) {
             throw new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
                 message: 'Invalid university provided',
             });
         }
+
+        user.university = universityInfo;
 
         return this.userRepository.save(user);
     }
