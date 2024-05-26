@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserService } from '../../user/user.service';
+import { Request } from 'express';
 import ApiError from '../../../../libs/common-config/res/api.error';
 import ApiCodes from '../../../../libs/common-config/res/api.codes';
 import ApiMessages from '../../../../libs/common-config/res/api.messages';
@@ -15,8 +16,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromExtractors([
-                (request) => {
-                    return request?.cookies?.user;
+                (request: Request) => {
+                    const token = request?.cookies?.user;
+                    if (!token) {
+                        throw new ApiError(
+                            ApiCodes.UNAUTHORIZED,
+                            ApiMessages.UNAUTHORIZED,
+                            {
+                                message:
+                                    'No authentication token found in cookies',
+                            },
+                        );
+                    }
+                    return token;
                 },
             ]),
             ignoreExpiration: false,
