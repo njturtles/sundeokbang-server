@@ -6,15 +6,15 @@ export class MockController {
     constructor(private readonly mockService: MockService) {}
 
     // 특정 원룸 조회
-    @Get('room/:id')
-    async getRoomsById(@Param('id', ParseIntPipe) id: number) {
-        const room = await this.mockService.getRoomsById(id);
+    @Get('rooms/:id')
+    async findOneByRoomId(@Param('id', ParseIntPipe) id: number) {
+        const room = await this.mockService.findOneByRoomId(id);
         return room;
     }
 
     //특정지역 원룸조회
-    @Get('rooms/:school')
-    async getRoomsBySchool(
+    @Get('schools/:school')
+    async findRoomsBySchoolId(
         @Param('school', ParseIntPipe) school: number,
     ): Promise<
         {
@@ -24,7 +24,7 @@ export class MockController {
             cost: number;
         }[]
     > {
-        const rooms = await this.mockService.getRoomsBySchool(school);
+        const rooms = await this.mockService.findRoomsBySchoolId(school);
         return rooms;
     }
 }

@@ -10,7 +10,7 @@ export class MockService {
     private rooms: Room[] = rooms;
 
     //원룸상세보기
-    async getRoomsById(id: number): Promise<Room> {
+    async findOneByRoomId(id: number): Promise<Room> {
         const room = this.rooms.find((room) => room._id === id);
         if (!room) {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
@@ -21,7 +21,7 @@ export class MockService {
     }
 
     //특정학교 원룸조회
-    async getRoomsBySchool(
+    async findRoomsBySchoolId(
         school: number,
     ): Promise<
         { name: string; address: string; deposit: number; cost: number }[]
