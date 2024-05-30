@@ -1,4 +1,11 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    ParseIntPipe,
+    Query,
+} from '@nestjs/common';
 import { MockService } from './mock.service';
 
 @Controller({ path: 'mock', version: '1' })
@@ -13,9 +20,11 @@ export class MockController {
     }
 
     //특정지역 원룸조회
-    @Get('university/:university_name')
+    @Get('rooms')
     async findRoomsByUniversitylName(
-        @Param('university_name') university_name: string,
+        @Body('university_name') university_name: string,
+        @Query('deposit') deposit?: string,
+        @Query('cost') cost?: string,
     ): Promise<
         {
             _id: number;
@@ -28,8 +37,24 @@ export class MockController {
             imageUrls: string[];
         }[]
     > {
+        let depositRange: [number, number] | undefined;
+        let costRange: [number, number] | undefined;
+
+        if (deposit) {
+            const [minDeposit, maxDeposit] = deposit.split(',').map(Number);
+            depositRange = [minDeposit, maxDeposit];
+        }
+
+        if (cost) {
+            const [minCost, maxCost] = cost.split(',').map(Number);
+            costRange = [minCost, maxCost];
+        }
+        
+
         const rooms = await this.mockService.findRoomsByUniversitylName(
             university_name,
+            depositRange,
+            costRange,
         );
         return rooms;
     }
