@@ -13,18 +13,24 @@ export class MockController {
     }
 
     //특정지역 원룸조회
-    @Get('schools/:school')
-    async findRoomsBySchoolId(
-        @Param('school', ParseIntPipe) school: number,
+    @Get('university/:university_name')
+    async findRoomsByUniversitylName(
+        @Param('university_name') university_name: string,
     ): Promise<
         {
+            _id: number;
             name: string;
             address: string;
+            latitude: number;
+            longitude: number;
             deposit: number;
             cost: number;
+            imageUrls: string[];
         }[]
     > {
-        const rooms = await this.mockService.findRoomsBySchoolId(school);
+        const rooms = await this.mockService.findRoomsByUniversitylName(
+            university_name,
+        );
         return rooms;
     }
 }

@@ -2,6 +2,9 @@ export interface Room {
     _id: number;
     name: string;
     address: string;
+    university_name: string;
+    latitude: number;
+    longitude: number;
     contracttype: string;
     deposit: number;
     cost: number;
@@ -19,10 +22,7 @@ export interface Room {
     detail: string;
     phone: string;
     owner: string;
-    latitude: number;
-    longitude: number;
     imageUrls: string[];
-    school: number;
     createdAt: Date;
     updatedAt: Date;
-  }
+}

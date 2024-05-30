@@ -21,18 +21,29 @@ export class MockService {
     }
 
     //특정학교 원룸조회
-    async findRoomsBySchoolId(
-        school: number,
-    ): Promise<
-        { name: string; address: string; deposit: number; cost: number }[]
+    async findRoomsByUniversitylName(university_name: string): Promise<
+        {
+            _id: number;
+            name: string;
+            address: string;
+            latitude: number;
+            longitude: number;
+            deposit: number;
+            cost: number;
+            imageUrls: string[];
+        }[]
     > {
         const filteredRooms = this.rooms
-            .filter((room) => room.school === school)
+            .filter((room) => room.university_name === university_name)
             .map((room) => ({
+                _id: room._id,
                 name: room.name,
                 address: room.address,
+                latitude: room.latitude,
+                longitude: room.longitude,
                 deposit: room.deposit,
                 cost: room.cost,
+                imageUrls: room.imageUrls,
             }));
         if (filteredRooms.length === 0) {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
