@@ -10,7 +10,7 @@ export class MockService {
     private rooms: Room[] = rooms;
 
     //원룸상세보기
-    async getRoomsById(id: number): Promise<Room> {
+    async findOneByRoomId(id: number): Promise<Room> {
         const room = this.rooms.find((room) => room._id === id);
         if (!room) {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
@@ -21,24 +21,57 @@ export class MockService {
     }
 
     //특정학교 원룸조회
-    async getRoomsBySchool(
-        school: number,
+    async findRoomsByUniversitylName(
+        university_name: string,
+        depositRange?: [number, number],
+        costRange?: [number, number],
     ): Promise<
-        { name: string; address: string; deposit: number; cost: number }[]
+        {
+            _id: number;
+            name: string;
+            address: string;
+            latitude: number;
+            longitude: number;
+            deposit: number;
+            cost: number;
+            imageUrls: string[];
+        }[]
     > {
-        const filteredRooms = this.rooms
-            .filter((room) => room.school === school)
-            .map((room) => ({
-                name: room.name,
-                address: room.address,
-                deposit: room.deposit,
-                cost: room.cost,
-            }));
+        let filteredRooms = this.rooms.filter(
+            (room) => room.university_name === university_name,
+        );
+
+        if (depositRange) {
+            filteredRooms = filteredRooms.filter(
+                (room) =>
+                    room.deposit >= depositRange[0] &&
+                    room.deposit <= depositRange[1],
+            );
+        }
+
+        if (costRange) {
+            filteredRooms = filteredRooms.filter(
+                (room) =>
+                    room.cost >= costRange[0] && room.cost <= costRange[1],
+            );
+        }
+
+        const filteredRoomsResult = filteredRooms.map((room) => ({
+            _id: room._id,
+            name: room.name,
+            address: room.address,
+            latitude: room.latitude,
+            longitude: room.longitude,
+            deposit: room.deposit,
+            cost: room.cost,
+            imageUrls: room.imageUrls,
+        }));
+
         if (filteredRooms.length === 0) {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
                 message: '해당 학교의 원룸을 찾을 수 없습니다',
             });
         }
-        return filteredRooms;
+        return filteredRoomsResult;
     }
 }
