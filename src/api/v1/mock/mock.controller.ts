@@ -22,7 +22,7 @@ export class MockController {
     //특정지역 원룸조회
     @Get('rooms')
     async findRoomsByUniversitylName(
-        @Body('university_name') university_name: string,
+        @Query('university_name') university_name: string,
         @Query('deposit') deposit?: string,
         @Query('cost') cost?: string,
     ): Promise<
@@ -49,7 +49,6 @@ export class MockController {
             const [minCost, maxCost] = cost.split(',').map(Number);
             costRange = [minCost, maxCost];
         }
-        
 
         const rooms = await this.mockService.findRoomsByUniversitylName(
             university_name,
