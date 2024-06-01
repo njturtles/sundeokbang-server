@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 import { Favorite } from '../favorite/favorite.entity';
 import { BaseTimeEntity } from '../BaseTimeEntity';
 import { University } from '../university/university.entity';
+import { File } from '../file/file.entity';
 
 @Entity('rooms')
 export class Room extends BaseTimeEntity {
@@ -71,8 +72,8 @@ export class Room extends BaseTimeEntity {
     @Column()
     owner: string;
 
-    @Column({ type: 'json', nullable: true })
-    imageUrls: string[];
+    @OneToMany(() => File, (file) => file.room)
+    files: File[];
 
     @OneToMany(() => Favorite, (favorite) => favorite.room)
     favorites: Favorite[];
