@@ -27,10 +27,10 @@ export class FileService {
         return await Promise.all(uploadPromises);
     }
 
-    async deleteFiles(fileNames: string | string[]): Promise<void[]> {
-        fileNames = this.ensureArray(fileNames);
-        const deletePromises = fileNames.map((fileName) =>
-            this.deleteFile(fileName),
+    async deleteFiles(fileUrls: string | string[]): Promise<void[]> {
+        fileUrls = this.ensureArray(fileUrls);
+        const deletePromises = fileUrls.map((fileUrl) =>
+            this.deleteFile(fileUrl),
         );
         return await Promise.all(deletePromises);
     }
@@ -56,7 +56,8 @@ export class FileService {
         }
     }
 
-    private async deleteFile(fileName: string): Promise<void> {
+    private async deleteFile(fileUrl: string): Promise<void> {
+        const fileName = this.extractFileNameFromUrl(fileUrl);
         const params = {
             Bucket: this.bucketName,
             Key: fileName,
@@ -67,6 +68,12 @@ export class FileService {
         } catch (error) {
             throw new ApiError(ApiCodes.CONFLICT, ApiMessages.CONFLICT);
         }
+    }
+
+    private extractFileNameFromUrl(fileUrl: string): string {
+        const url = new URL(fileUrl);
+        const fileName = url.pathname.split('/').pop();
+        return decodeURIComponent(fileName);
     }
 
     private getFileUrl(fileName: string): string {
