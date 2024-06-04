@@ -10,7 +10,11 @@ export const rooms = [
         deposit: 100, //보증금
         cost: 30, //월세
         term: '1년', //계약기간
+<<<<<<< HEAD
         maintenanceCost: 10000, //관리비
+=======
+        maintenanceCost: 1, //관리비
+>>>>>>> 1670974 (브랜치 오류수정)
         commonArea: '주방', //세대 공동구역
         type: '2인실', //방타입
         exclusiveArea: 16.95, //전용면적
@@ -42,7 +46,11 @@ export const rooms = [
         deposit: 200, //보증금
         cost: 40, //월세
         term: '1년', //계약기간
+<<<<<<< HEAD
         maintenanceCost: 10000, //관리비
+=======
+        maintenanceCost: 1, //관리비
+>>>>>>> 1670974 (브랜치 오류수정)
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 25, //전용면적
@@ -74,7 +82,11 @@ export const rooms = [
         deposit: 100, //보증금
         cost: 35, //월세
         term: '1년', //계약기간
+<<<<<<< HEAD
         maintenanceCost: 30000, //관리비
+=======
+        maintenanceCost: 3, //관리비
+>>>>>>> 1670974 (브랜치 오류수정)
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 27, //전용면적
@@ -106,7 +118,11 @@ export const rooms = [
         deposit: 100, //보증금
         cost: 37, //월세
         term: '1년', //계약기간
+<<<<<<< HEAD
         maintenanceCost: 20000, //관리비
+=======
+        maintenanceCost: 2, //관리비
+>>>>>>> 1670974 (브랜치 오류수정)
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 30.23, //전용면적
@@ -138,7 +154,11 @@ export const rooms = [
         deposit: 100, //보증금
         cost: 50, //월세
         term: '1년', //계약기간
+<<<<<<< HEAD
         maintenanceCost: 20000, //관리비
+=======
+        maintenanceCost: 2, //관리비
+>>>>>>> 1670974 (브랜치 오류수정)
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 25, //전용면적
