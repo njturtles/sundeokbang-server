@@ -153,10 +153,14 @@ export const rooms = [
         contracttype: '월세', //거래종류
         deposit: 100, //보증금
         cost: 50, //월세
+<<<<<<< HEAD
         term: '1년', //계약기간
 <<<<<<< HEAD
         maintenanceCost: 20000, //관리비
 =======
+=======
+        term: '1년', //계약기간 ㅁㄴㅇㄹ
+>>>>>>> 666e339 (깃 오류수정)
         maintenanceCost: 2, //관리비
 >>>>>>> 1670974 (브랜치 오류수정)
         commonArea: '현관', //세대 공용구역
