@@ -15,10 +15,10 @@ export class Room extends BaseTimeEntity {
     @ManyToOne(() => University, (university) => university.rooms)
     university: University;
 
-    @Column({ nullable: true })
+    @Column({ type: 'decimal', precision: 12, scale: 6 })
     latitude: number;
 
-    @Column({ nullable: true })
+    @Column({ type: 'decimal', precision: 12, scale: 6 })
     longitude: number;
 
     @Column()
