@@ -1,10 +1,11 @@
-<<<<<<< HEAD
-import { Controller } from '@nestjs/common';
-
-@Controller('rooms')
-export class RoomController {}
-=======
-import { Controller, Get, Req, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Req,
+    UseGuards,
+    Query,
+    UseInterceptors,
+} from '@nestjs/common';
 import { RoomService } from './room.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { Request } from 'express';
@@ -21,9 +22,12 @@ export class RoomController {
     async findAll(
         @Req() req: Request,
         @Query('university_name') universityName: string,
-    ): Promise<any> { // RoomResponseDto[] 대신 any를 사용
+    ): Promise<any> {
+        // RoomResponseDto[] 대신 any를 사용
         const userId = req.cookies.user_id;
-        return this.roomService.findRoomsByUniversitylName(universityName, userId);
+        return this.roomService.findRoomsByUniversitylName(
+            universityName,
+            userId,
+        );
     }
 }
->>>>>>> 1670974 (브랜치 오류수정)

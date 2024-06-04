@@ -1,9 +1,4 @@
 import { Injectable } from '@nestjs/common';
-<<<<<<< HEAD
-
-@Injectable()
-export class RoomService {}
-=======
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../../../libs/entity/room/room.entity';
@@ -50,4 +45,3 @@ export class RoomService {
         });
     }
 }
->>>>>>> 1670974 (브랜치 오류수정)
