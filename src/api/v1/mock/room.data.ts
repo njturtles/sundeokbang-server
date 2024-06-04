@@ -146,7 +146,7 @@ export const rooms = [
     {
         _id: 5,
         name: '에스클래스빌', //원룸명
-        address: '전라남도 순천시 북정3길 31-1', //주소
+        address: '전라남도 순천시 북정3길 31-1', //주소asdfasdf
         university_name: '순천대학교', //대학교
         latitude: 34.965131, //위도
         longitude: 127.48246, //경도
