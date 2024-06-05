@@ -1,47 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Room } from '../../../libs/entity/room/room.entity';
-import { Favorite } from '../../../libs/entity/favorite/favorite.entity';
+import { RoomResponseDto } from './dto/RoomResponse.dto';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { RoomRepository } from './room.repository';
+import { FavoriteRepository } from './favorite.repository';
 
 @Injectable()
 export class RoomService {
     constructor(
-        @InjectRepository(Room)
-        private roomRepository: Repository<Room>,
-        @InjectRepository(Favorite)
-        private favoriteRepository: Repository<Favorite>,
+        @InjectRepository(RoomRepository)
+        private roomRepository: RoomRepository,
+        @InjectRepository(FavoriteRepository)
+        private favoriteRepository: FavoriteRepository,
     ) {}
 
-    async findRoomsByUniversitylName(
-        universityName: string,
-        userId: number,
-    ): Promise<Room[]> {
-        const rooms = await this.roomRepository
-            .createQueryBuilder('room')
-            .innerJoinAndSelect(
-                'room.university',
-                'university',
-                'university.name = :universityName',
-                { universityName },
-            )
-            .leftJoinAndSelect('room.favorites', 'favorites')
-            .leftJoinAndSelect('room.files', 'files')
-            .getMany();
-
-        const favorites = await this.favoriteRepository.find({
-            where: { user: { _id: userId } },
-            relations: ['room'],
-        });
+    async findRoomsByUniversityName(
+        university_name: string,
+        providerId: string,
+    ): Promise<RoomResponseDto[]> {
+        const rooms = await this.roomRepository.findByUniversityName(
+            university_name,
+        );
+        const favorites = await this.favoriteRepository.findByUserProviderId(
+            providerId,
+        );
 
         return rooms.map((room) => {
             const isFavorite = favorites.some(
                 (fav) => fav.room._id === room._id,
             );
-            return {
-                ...room,
-                isFavorite,
-            };
+
+            const plainRoom = instanceToPlain(room);
+            plainRoom.isFavorite = isFavorite;
+            plainRoom.imageUrl =
+                room.files.length > 0 ? room.files[0].url : null;
+
+            return plainToInstance(RoomResponseDto, plainRoom, {
+                excludeExtraneousValues: true,
+            });
         });
     }
 }

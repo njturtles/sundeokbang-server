@@ -1,19 +1,11 @@
-import {
-    Controller,
-    Get,
-    Req,
-    UseGuards,
-    Query,
-    UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get, Req, UseGuards, Query } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { Request } from 'express';
-import { RoomResponseDto } from './dto/room-response.dto';
-import { TransformInterceptor } from '../../../libs/common-config/interceptors/transform.interceptor';
+import { RoomResponseDto } from './dto/RoomResponse.dto';
+import { Payload } from '../auth/jwt/jwt.payload';
 
 @Controller({ path: 'room', version: '1' })
-@UseInterceptors(new TransformInterceptor(RoomResponseDto))
 export class RoomController {
     constructor(private readonly roomService: RoomService) {}
 
@@ -21,13 +13,13 @@ export class RoomController {
     @UseGuards(JwtAuthGuard)
     async findAll(
         @Req() req: Request,
-        @Query('university_name') universityName: string,
-    ): Promise<any> {
-        // RoomResponseDto[] 대신 any를 사용
-        const userId = req.cookies.user_id;
-        return this.roomService.findRoomsByUniversitylName(
-            universityName,
-            userId,
+        @Query('university_name') university_name: string,
+    ): Promise<RoomResponseDto[]> {
+        const user = req.user as Payload;
+        const providerId = user.providerId;
+        return this.roomService.findRoomsByUniversityName(
+            university_name,
+            providerId,
         );
     }
 }
