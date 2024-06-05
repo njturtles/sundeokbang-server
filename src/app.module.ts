@@ -8,6 +8,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './libs/common-config/res/response.interceptor';
 import { AllExceptionsFilter } from './libs/common-config/filter/http-exception.filter';
 import { ContextMiddleware } from './libs/middleware/request-context/context.middleware';
+import { validate } from './libs/env/env.validation';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { ContextMiddleware } from './libs/middleware/request-context/context.mid
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: `.env.${process.env.NODE_ENV}`,
+            validate,
         }),
         V1Module,
     ],
