@@ -12,7 +12,7 @@ export class RoomRepository extends Repository<Room> {
     }
 
     async findByUniversityName(universityName: string): Promise<Room[]> {
-        return this.repository
+        const rooms = await this.repository
             .createQueryBuilder('room')
             .innerJoinAndSelect(
                 'room.university',
@@ -23,5 +23,6 @@ export class RoomRepository extends Repository<Room> {
             .leftJoinAndSelect('room.favorites', 'favorites')
             .leftJoinAndSelect('room.files', 'files')
             .getMany();
+        return rooms;
     }
 }

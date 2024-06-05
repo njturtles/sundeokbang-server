@@ -18,10 +18,28 @@ export class RoomService {
     async findRoomsByUniversityName(
         university_name: string,
         providerId: string,
+        depositRange?: [number, number],
+        costRange?: [number, number],
     ): Promise<RoomResponseDto[]> {
-        const rooms = await this.roomRepository.findByUniversityName(
+        let rooms = await this.roomRepository.findByUniversityName(
             university_name,
         );
+
+        if (depositRange) {
+            rooms = rooms.filter(
+                (room) =>
+                    room.deposit >= depositRange[0] &&
+                    room.deposit <= depositRange[1],
+            );
+        }
+
+        if (costRange) {
+            rooms = rooms.filter(
+                (room) =>
+                    room.cost >= costRange[0] && room.cost <= costRange[1],
+            );
+        }
+
         const favorites = await this.favoriteRepository.findByUserProviderId(
             providerId,
         );
