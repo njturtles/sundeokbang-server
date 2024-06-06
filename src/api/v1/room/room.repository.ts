@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Room } from '../../../libs/entity/room/room.entity';
-import { Favorite } from 'src/libs/entity/favorite/favorite.entity';
+import { Favorite } from '../../../libs/entity/favorite/favorite.entity';
+import { RoomResponseDto } from './dto/RoomResponse.dto';
 
 @Injectable()
 export class RoomRepository extends Repository<Room> {
@@ -15,20 +16,20 @@ export class RoomRepository extends Repository<Room> {
 
     async findByUniversityNameAndFilters(
         universityName: string,
-        depositRange?: [number, number],
-        costRange?: [number, number],
+        deposit?: string,
+        cost?: string,
         providerId?: string,
-    ): Promise<any[]> {
+    ): Promise<RoomResponseDto[]> {
         const query = this.createQueryBuilder('room')
             .select([
                 'room._id as id',
-                'room.latitude',
-                'room.longitude',
-                'room.name',
-                'room.address',
-                'room.deposit',
-                'room.cost',
-                'files.url as imageUrl',
+                'room.latitude as latitude',
+                'room.longitude as longitude',
+                'room.name as name',
+                'room.address as address',
+                'room.deposit as deposit',
+                'room.cost as cost',
+                'MIN(files.url) as imageUrl',
             ])
             .innerJoin(
                 'room.university',
@@ -36,19 +37,22 @@ export class RoomRepository extends Repository<Room> {
                 'university.name = :universityName',
                 { universityName },
             )
-            .leftJoin('room.files', 'files');
+            .leftJoin('room.files', 'files')
+            .groupBy('room._id');
 
-        if (depositRange) {
+        if (deposit) {
+            const [depositMin, depositMax] = deposit.split(',').map(Number);
             query.andWhere('room.deposit BETWEEN :depositMin AND :depositMax', {
-                depositMin: depositRange[0],
-                depositMax: depositRange[1],
+                depositMin,
+                depositMax,
             });
         }
 
-        if (costRange) {
+        if (cost) {
+            const [costMin, costMax] = cost.split(',').map(Number);
             query.andWhere('room.cost BETWEEN :costMin AND :costMax', {
-                costMin: costRange[0],
-                costMax: costRange[1],
+                costMin,
+                costMax,
             });
         }
 
@@ -73,6 +77,19 @@ export class RoomRepository extends Repository<Room> {
             });
         }
 
-        return rooms;
+        return rooms.map(
+            (room) =>
+                new RoomResponseDto(
+                    room.id,
+                    room.latitude,
+                    room.longitude,
+                    room.name,
+                    room.address,
+                    room.deposit,
+                    room.cost,
+                    room.isFavorite,
+                    room.imageUrl,
+                ),
+        );
     }
 }
