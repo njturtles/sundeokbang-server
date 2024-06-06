@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoomResponseDto } from './dto/RoomResponse.dto';
 import { RoomRepository } from './room.repository';
 import { Favorite } from 'src/libs/entity/favorite/favorite.entity';
 import { Repository } from 'typeorm';
@@ -18,7 +17,7 @@ export class RoomService {
         providerId: string,
         deposit?: string,
         cost?: string,
-    ): Promise<RoomResponseDto[]> {
+    ): Promise<any[]> {
         const depositRange = deposit
             ? (deposit.split(',').map(Number) as [number, number])
             : undefined;
@@ -26,11 +25,13 @@ export class RoomService {
             ? (cost.split(',').map(Number) as [number, number])
             : undefined;
 
-        return this.roomRepository.findByUniversityNameAndFilters(
+        const rooms = await this.roomRepository.findByUniversityNameAndFilters(
             university_name,
             depositRange,
             costRange,
             providerId,
         );
+
+        return rooms;
     }
 }
