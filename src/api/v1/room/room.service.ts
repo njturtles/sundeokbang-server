@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Room } from '../../../../libs/entity/room/room.entity';
-import { RoomResponseDto } from '../dto/RoomResponse.dto';
-import { RoomRepository } from '../repositroy/room.repository';
+import { Room } from '../../../libs/entity/room/room.entity';
+import { RoomResponseDto } from './dto/RoomResponse.dto';
+import { RoomRepository } from './room.repository';
 import { Favorite } from 'src/libs/entity/favorite/favorite.entity';
 import { RoomFilterService } from './roomFilter.service';
 import { Repository } from 'typeorm';
-import { RoomMapper } from './roomMapper';
 
 @Injectable()
 export class RoomService {
     constructor(
-        @InjectRepository(RoomRepository)
         private roomRepository: RoomRepository,
         @InjectRepository(Favorite)
         private favoriteRepository: Repository<Favorite>,
@@ -40,23 +38,27 @@ export class RoomService {
             costRange,
         );
 
-        const favorites = await this.findFavoritesByUserProviderId(providerId);
-        return this.mapRoomsToResponse(filteredRooms, favorites);
-    }
-
-    private async findFavoritesByUserProviderId(
-        providerId: string,
-    ): Promise<Favorite[]> {
-        return this.favoriteRepository.find({
+        const favorites = await this.favoriteRepository.find({
             where: { user: { providerId } },
             relations: ['room'],
         });
-    }
 
-    private mapRoomsToResponse(
-        rooms: Room[],
-        favorites: Favorite[],
-    ): RoomResponseDto[] {
-        return rooms.map((room) => RoomMapper.toResponseDto(room, favorites));
+        return filteredRooms.map((room) => {
+            const isFavorite = favorites.some(
+                (fav) => fav.room._id === room._id,
+            );
+
+            return {
+                id: room._id,
+                latitude: room.latitude,
+                longitude: room.longitude,
+                name: room.name,
+                address: room.address,
+                deposit: room.deposit,
+                cost: room.cost,
+                isFavorite,
+                imageUrl: room.files.length > 0 ? room.files[0].url : null,
+            } as RoomResponseDto;
+        });
     }
 }

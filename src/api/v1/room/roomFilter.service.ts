@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Room } from '../../../../libs/entity/room/room.entity';
+import { Room } from '../../../libs/entity/room/room.entity';
 
 @Injectable()
 export class RoomFilterService {
