@@ -11,7 +11,7 @@ export class RoomController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    async findAll(
+    async findAllByUniversityNameAndFilters(
         @Req() req: Request,
         @Query('deposit') deposit?: string,
         @Query('cost') cost?: string,

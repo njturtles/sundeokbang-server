@@ -29,16 +29,14 @@ export class RoomRepository extends Repository<Room> {
                 'room.address as address',
                 'room.deposit as deposit',
                 'room.cost as cost',
-                'MIN(files.url) as imageUrl',
+                `(SELECT url FROM files WHERE files.room_id = room._id LIMIT 1) as imageUrl`,
             ])
             .innerJoin(
                 'room.university',
                 'university',
                 'university.name = :universityName',
                 { universityName },
-            )
-            .leftJoin('room.files', 'files')
-            .groupBy('room._id');
+            );
 
         if (deposit) {
             const [depositMin, depositMax] = deposit.split(',').map(Number);
@@ -68,12 +66,10 @@ export class RoomRepository extends Repository<Room> {
                 .select(['favorite.room_id as room_id'])
                 .getRawMany();
 
-            const favoriteRoomIds = new Set(
-                favorites.map((fav) => fav.room_id),
-            );
+            const favoriteRoomId = new Set(favorites.map((fav) => fav.room_id));
 
             rooms.forEach((room) => {
-                room.isFavorite = favoriteRoomIds.has(room.id);
+                room.isFavorite = favoriteRoomId.has(room.id);
             });
         }
 
