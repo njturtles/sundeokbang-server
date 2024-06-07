@@ -19,10 +19,17 @@ export class RoomService {
         deposit?: string,
         cost?: string,
     ): Promise<RoomResponseDto[]> {
+        const depositRange = deposit
+            ? (deposit.split(',').map(Number) as [number, number])
+            : undefined;
+        const costRange = cost
+            ? (cost.split(',').map(Number) as [number, number])
+            : undefined;
+
         const rooms = await this.roomRepository.findByUniversityNameAndFilters(
             university_name,
-            deposit,
-            cost,
+            depositRange,
+            costRange,
             providerId,
         );
 
