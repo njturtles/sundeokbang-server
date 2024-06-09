@@ -20,8 +20,10 @@ export class RoomController {
     ): Promise<RoomResponseDto[]> {
         const user = req.user as Payload;
         const providerId = user.providerId;
+        const universityName = user.university;
 
-        return this.roomService.getRoomsByUserProviderId(
+        return this.roomService.getRoomsByUserUniversity(
+            universityName,
             providerId,
             depositMin,
             depositMax,

@@ -28,26 +28,4 @@ export class RoomResponseDto {
     @Expose()
     @Transform(({ obj }) => (obj.imageUrl ? obj.imageUrl : null))
     imageUrl: string | null;
-
-    constructor(
-        id: number,
-        latitude: number,
-        longitude: number,
-        name: string,
-        address: string,
-        deposit: number,
-        cost: number,
-        isFavorite: boolean,
-        imageUrl: string | null,
-    ) {
-        this.id = id;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.name = name;
-        this.address = address;
-        this.deposit = deposit;
-        this.cost = cost;
-        this.isFavorite = isFavorite;
-        this.imageUrl = imageUrl;
-    }
 }

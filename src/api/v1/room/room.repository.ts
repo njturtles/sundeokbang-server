@@ -1,42 +1,49 @@
 import { Repository, DataSource } from 'typeorm';
-import { User } from '../../../libs/entity/user/user.entity';
 import { Room } from '../../../libs/entity/room/room.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomResponseDto } from './dto/RoomResponse.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class RoomRepository extends Repository<Room> {
     constructor(
         @InjectRepository(Room)
         private readonly roomRepository: Repository<Room>,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
         private dataSource: DataSource,
     ) {
-        super(
-            roomRepository.target,
-            roomRepository.manager,
-            roomRepository.queryRunner,
-        );
+        super(roomRepository.target, roomRepository.manager, roomRepository.queryRunner);
+    }
+    
+    private applyDepositFilter(query, depositMin?: number, depositMax?: number) {
+        if (depositMin !== undefined && depositMax !== undefined) {
+            query.andWhere('room.deposit BETWEEN :depositMin AND :depositMax', {
+                depositMin,
+                depositMax,
+            });
+        }
+        return query;
     }
 
-    async findUserByProviderId(providerId: string): Promise<User> {
-        return this.userRepository.findOne({
-            where: { providerId },
-            relations: ['university'],
-        });
+    private applyCostFilter(query, costMin?: number, costMax?: number) {
+        if (costMin !== undefined && costMax !== undefined) {
+            query.andWhere('room.cost BETWEEN :costMin AND :costMax', {
+                costMin,
+                costMax,
+            });
+        }
+        return query;
     }
 
-    async findRoomsByUniversityIdAndFilters(
-        universityId: number,
+    async findRoomsByUniversityNameAndFilters(
+        universityName: string,
         providerId: string,
         depositMin?: number,
         depositMax?: number,
         costMin?: number,
         costMax?: number,
     ): Promise<RoomResponseDto[]> {
-        const query = this.roomRepository
+        const query = await this.roomRepository
             .createQueryBuilder('room')
             .select([
                 'room._id as id',
@@ -55,38 +62,18 @@ export class RoomRepository extends Repository<Room> {
                 ) THEN 1 ELSE 0 END as isFavorite`,
             ])
             .leftJoin('room.university', 'university')
-            .where('university._id = :universityId', { universityId })
+            .where('university.name = :universityName', { universityName })
             .setParameter('providerId', providerId);
 
-        return query
-            .andWhere(
-                depositMin !== undefined && depositMax !== undefined
-                    ? 'room.deposit BETWEEN :depositMin AND :depositMax'
-                    : '1=1',
-                { depositMin, depositMax },
-            )
-            .andWhere(
-                costMin !== undefined && costMax !== undefined
-                    ? 'room.cost BETWEEN :costMin AND :costMax'
-                    : '1=1',
-                { costMin, costMax },
-            )
-            .getRawMany()
-            .then((rooms) =>
-                rooms.map(
-                    (room) =>
-                        new RoomResponseDto(
-                            room.id,
-                            room.latitude,
-                            room.longitude,
-                            room.name,
-                            room.address,
-                            room.deposit,
-                            room.cost,
-                            Boolean(Number(room.isFavorite)),
-                            room.imageUrl,
-                        ),
-                ),
-            );
+        this.applyDepositFilter(query, depositMin, depositMax);
+        this.applyCostFilter(query, costMin, costMax);
+
+        const rooms = await query.getRawMany();
+
+        return rooms.map((room) =>
+            plainToClass(RoomResponseDto, room, {
+                excludeExtraneousValues: true,
+            }),
+        );
     }
 }
