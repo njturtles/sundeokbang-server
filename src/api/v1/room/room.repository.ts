@@ -28,9 +28,9 @@ export class RoomRepository extends Repository<Room> {
         });
     }
 
-    async findRoomsByUniversityIdAndFileters(
+    async findRoomsByUniversityIdAndFilters(
         universityId: number,
-        userId: number,
+        providerId: string,
         depositMin?: number,
         depositMax?: number,
         costMin?: number,
@@ -51,12 +51,12 @@ export class RoomRepository extends Repository<Room> {
                     SELECT 1 
                     FROM favorites favorite 
                     WHERE favorite.room_id = room._id 
-                    AND favorite.user_id = :userId
+                    AND favorite.user_id = (SELECT user._id FROM users user WHERE user.providerId = :providerId)
                 ) THEN 1 ELSE 0 END as isFavorite`,
             ])
             .leftJoin('room.university', 'university')
             .where('university._id = :universityId', { universityId })
-            .setParameter('userId', userId);
+            .setParameter('providerId', providerId);
 
         return query
             .andWhere(

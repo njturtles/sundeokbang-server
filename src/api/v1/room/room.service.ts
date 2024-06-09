@@ -21,9 +21,9 @@ export class RoomService {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND);
         }
 
-        return this.roomRepository.findRoomsByUniversityIdAndFileters(
+        return this.roomRepository.findRoomsByUniversityIdAndFilters(
             user.university._id,
-            user._id,
+            user.providerId,
             depositMin,
             depositMax,
             costMin,
