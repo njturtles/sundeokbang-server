@@ -1,74 +1,43 @@
+import { Repository, DataSource } from 'typeorm';
+import { User } from '../../../libs/entity/user/user.entity';
+import { Room } from '../../../libs/entity/room/room.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource, SelectQueryBuilder } from 'typeorm';
-import { Room } from '../../../libs/entity/room/room.entity';
-import { Favorite } from '../../../libs/entity/favorite/favorite.entity';
 import { RoomResponseDto } from './dto/RoomResponse.dto';
 
 @Injectable()
 export class RoomRepository extends Repository<Room> {
     constructor(
-        @InjectRepository(Room) private readonly repository: Repository<Room>,
+        @InjectRepository(Room)
+        private readonly roomRepository: Repository<Room>,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
         private dataSource: DataSource,
     ) {
-        super(repository.target, repository.manager, repository.queryRunner);
+        super(
+            roomRepository.target,
+            roomRepository.manager,
+            roomRepository.queryRunner,
+        );
     }
 
-    private applyFilters(
-        query: SelectQueryBuilder<Room>,
-        depositRange?: [number, number],
-        costRange?: [number, number],
-    ): SelectQueryBuilder<Room> {
-        depositRange &&
-            query.andWhere('room.deposit BETWEEN :depositMin AND :depositMax', {
-                depositMin: depositRange[0],
-                depositMax: depositRange[1],
-            });
-
-        costRange &&
-            query.andWhere('room.cost BETWEEN :costMin AND :costMax', {
-                costMin: costRange[0],
-                costMax: costRange[1],
-            });
-
-        return query;
-    }
-
-    private async addFavoriteFlag(
-        rooms: RoomResponseDto[],
-        providerId?: string,
-    ): Promise<RoomResponseDto[]> {
-        const favoriteRoomId = providerId
-            ? new Set(
-                  (
-                      await this.dataSource
-                          .getRepository(Favorite)
-                          .createQueryBuilder('favorite')
-                          .innerJoin('favorite.room', 'room')
-                          .innerJoin('favorite.user', 'user')
-                          .where('user.providerId = :providerId', {
-                              providerId,
-                          })
-                          .select(['favorite.room_id as room_id'])
-                          .getRawMany()
-                  ).map((fav) => fav.room_id),
-              )
-            : new Set();
-
-        rooms.forEach((room) => {
-            room.isFavorite = favoriteRoomId.has(room.id);
+    async findUserByProviderId(providerId: string): Promise<User> {
+        return this.userRepository.findOne({
+            where: { providerId },
+            relations: ['university'],
         });
-
-        return rooms;
     }
 
-    async findByUniversityNameAndFilters(
-        universityName: string,
-        depositRange?: [number, number],
-        costRange?: [number, number],
-        providerId?: string,
+    async findRoomsByUniversityIdAndFileters(
+        universityId: number,
+        userId: number,
+        depositMin?: number,
+        depositMax?: number,
+        costMin?: number,
+        costMax?: number,
     ): Promise<RoomResponseDto[]> {
-        let query = this.createQueryBuilder('room')
+        const query = this.roomRepository
+            .createQueryBuilder('room')
             .select([
                 'room._id as id',
                 'room.latitude as latitude',
@@ -78,18 +47,46 @@ export class RoomRepository extends Repository<Room> {
                 'room.deposit as deposit',
                 'room.cost as cost',
                 `(SELECT url FROM files WHERE files.room_id = room._id LIMIT 1) as imageUrl`,
+                `CASE WHEN EXISTS (
+                    SELECT 1 
+                    FROM favorites favorite 
+                    WHERE favorite.room_id = room._id 
+                    AND favorite.user_id = :userId
+                ) THEN 1 ELSE 0 END as isFavorite`,
             ])
-            .innerJoin(
-                'room.university',
-                'university',
-                'university.name = :universityName',
-                { universityName },
+            .leftJoin('room.university', 'university')
+            .where('university._id = :universityId', { universityId })
+            .setParameter('userId', userId);
+
+        return query
+            .andWhere(
+                depositMin !== undefined && depositMax !== undefined
+                    ? 'room.deposit BETWEEN :depositMin AND :depositMax'
+                    : '1=1',
+                { depositMin, depositMax },
+            )
+            .andWhere(
+                costMin !== undefined && costMax !== undefined
+                    ? 'room.cost BETWEEN :costMin AND :costMax'
+                    : '1=1',
+                { costMin, costMax },
+            )
+            .getRawMany()
+            .then((rooms) =>
+                rooms.map(
+                    (room) =>
+                        new RoomResponseDto(
+                            room.id,
+                            room.latitude,
+                            room.longitude,
+                            room.name,
+                            room.address,
+                            room.deposit,
+                            room.cost,
+                            Boolean(Number(room.isFavorite)),
+                            room.imageUrl,
+                        ),
+                ),
             );
-
-        query = this.applyFilters(query, depositRange, costRange);
-
-        const rooms: RoomResponseDto[] = await query.getRawMany();
-
-        return this.addFavoriteFlag(rooms, providerId);
     }
 }

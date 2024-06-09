@@ -1,38 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { RoomRepository } from './room.repository';
-import { Favorite } from '../../../libs/entity/favorite/favorite.entity';
-import { Repository } from 'typeorm';
 import { RoomResponseDto } from './dto/RoomResponse.dto';
+import ApiError from '../../../libs/common-config/res/api.error';
+import ApiCodes from '../../../libs/common-config/res/api.codes';
+import ApiMessages from 'src/libs/common-config/res/api.messages';
 
 @Injectable()
 export class RoomService {
-    constructor(
-        @InjectRepository(Favorite)
-        private favoriteRepository: Repository<Favorite>,
-        private roomRepository: RoomRepository,
-    ) {}
+    constructor(private readonly roomRepository: RoomRepository) {}
 
-    async findRoomsByUniversityName(
-        university_name: string,
+    async getRoomsByUserProviderId(
         providerId: string,
-        deposit?: string,
-        cost?: string,
+        depositMin?: number,
+        depositMax?: number,
+        costMin?: number,
+        costMax?: number,
     ): Promise<RoomResponseDto[]> {
-        const depositRange = deposit
-            ? (deposit.split(',').map(Number) as [number, number])
-            : undefined;
-        const costRange = cost
-            ? (cost.split(',').map(Number) as [number, number])
-            : undefined;
+        const user = await this.roomRepository.findUserByProviderId(providerId);
+        if (!user || !user.university) {
+            throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND);
+        }
 
-        const rooms = await this.roomRepository.findByUniversityNameAndFilters(
-            university_name,
-            depositRange,
-            costRange,
-            providerId,
+        return this.roomRepository.findRoomsByUniversityIdAndFileters(
+            user.university._id,
+            user._id,
+            depositMin,
+            depositMax,
+            costMin,
+            costMax,
         );
-
-        return rooms;
     }
 }
