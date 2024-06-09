@@ -92,4 +92,20 @@ export class RoomRepository extends Repository<Room> {
 
         return this.addFavoriteFlag(rooms, providerId);
     }
+
+    async isRoomFavoritedByUser(
+        roomId: number,
+        userId: string,
+    ): Promise<boolean> {
+        const query = await this.createQueryBuilder('room')
+            .select(
+                'CASE WHEN EXISTS (SELECT 1 FROM favorites favorite WHERE favorite.room_id = :roomId AND favorite.user_id = :userId) THEN 1 ELSE 0 END',
+                'isFavorited',
+            )
+            .setParameter('roomId', roomId)
+            .setParameter('userId', userId)
+            .getRawOne();
+
+        return Boolean(Number(query.isFavorited));
+    }
 }
