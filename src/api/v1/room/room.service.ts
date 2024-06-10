@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RoomRepository } from './room.repository';
+import { Room } from 'src/libs/entity/room/room.entity';
 
 @Injectable()
 export class RoomService {
@@ -12,7 +13,7 @@ export class RoomService {
         depositMax?: number,
         costMin?: number,
         costMax?: number,
-    ): Promise<any[]> {
+    ): Promise<Room[]> {
         let query = this.roomRepository.createRoomQuery(
             universityName,
             providerId,
