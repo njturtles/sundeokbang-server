@@ -17,7 +17,7 @@ export class RoomRepository extends Repository<Room> {
         );
     }
 
-    createRoomQuery(
+    public createRoomQuery(
         universityName: string,
         providerId: string,
     ): SelectQueryBuilder<Room> {
@@ -44,7 +44,7 @@ export class RoomRepository extends Repository<Room> {
             .setParameter('providerId', providerId);
     }
 
-    applyDepositFilter(
+    public applyDepositFilter(
         query: SelectQueryBuilder<Room>,
         depositMin: number,
         depositMax: number,
@@ -58,7 +58,7 @@ export class RoomRepository extends Repository<Room> {
         );
     }
 
-    applyCostFilter(
+    public applyCostFilter(
         query: SelectQueryBuilder<Room>,
         costMin: number,
         costMax: number,
