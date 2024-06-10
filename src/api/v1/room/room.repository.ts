@@ -1,9 +1,7 @@
-import { Repository, DataSource } from 'typeorm';
+import { Repository, DataSource, SelectQueryBuilder } from 'typeorm';
 import { Room } from '../../../libs/entity/room/room.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoomResponseDto } from './dto/RoomResponse.dto';
-import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class RoomRepository extends Repository<Room> {
@@ -12,38 +10,18 @@ export class RoomRepository extends Repository<Room> {
         private readonly roomRepository: Repository<Room>,
         private dataSource: DataSource,
     ) {
-        super(roomRepository.target, roomRepository.manager, roomRepository.queryRunner);
-    }
-    
-    private applyDepositFilter(query, depositMin?: number, depositMax?: number) {
-        if (depositMin !== undefined && depositMax !== undefined) {
-            query.andWhere('room.deposit BETWEEN :depositMin AND :depositMax', {
-                depositMin,
-                depositMax,
-            });
-        }
-        return query;
+        super(
+            roomRepository.target,
+            roomRepository.manager,
+            roomRepository.queryRunner,
+        );
     }
 
-    private applyCostFilter(query, costMin?: number, costMax?: number) {
-        if (costMin !== undefined && costMax !== undefined) {
-            query.andWhere('room.cost BETWEEN :costMin AND :costMax', {
-                costMin,
-                costMax,
-            });
-        }
-        return query;
-    }
-
-    async findRoomsByUniversityNameAndFilters(
+    createRoomQuery(
         universityName: string,
         providerId: string,
-        depositMin?: number,
-        depositMax?: number,
-        costMin?: number,
-        costMax?: number,
-    ): Promise<RoomResponseDto[]> {
-        const query = await this.roomRepository
+    ): SelectQueryBuilder<Room> {
+        return this.roomRepository
             .createQueryBuilder('room')
             .select([
                 'room._id as id',
@@ -64,16 +42,30 @@ export class RoomRepository extends Repository<Room> {
             .leftJoin('room.university', 'university')
             .where('university.name = :universityName', { universityName })
             .setParameter('providerId', providerId);
+    }
 
-        this.applyDepositFilter(query, depositMin, depositMax);
-        this.applyCostFilter(query, costMin, costMax);
-
-        const rooms = await query.getRawMany();
-
-        return rooms.map((room) =>
-            plainToClass(RoomResponseDto, room, {
-                excludeExtraneousValues: true,
-            }),
+    applyDepositFilter(
+        query: SelectQueryBuilder<Room>,
+        depositMin: number,
+        depositMax: number,
+    ): SelectQueryBuilder<Room> {
+        return query.andWhere(
+            'room.deposit BETWEEN :depositMin AND :depositMax',
+            {
+                depositMin,
+                depositMax,
+            },
         );
+    }
+
+    applyCostFilter(
+        query: SelectQueryBuilder<Room>,
+        costMin: number,
+        costMax: number,
+    ): SelectQueryBuilder<Room> {
+        return query.andWhere('room.cost BETWEEN :costMin AND :costMax', {
+            costMin,
+            costMax,
+        });
     }
 }

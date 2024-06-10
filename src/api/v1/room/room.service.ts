@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { RoomRepository } from './room.repository';
-import { RoomResponseDto } from './dto/RoomResponse.dto';
 
 @Injectable()
 export class RoomService {
@@ -13,14 +12,28 @@ export class RoomService {
         depositMax?: number,
         costMin?: number,
         costMax?: number,
-    ): Promise<RoomResponseDto[]> {
-        return this.roomRepository.findRoomsByUniversityNameAndFilters(
+    ): Promise<any[]> {
+        let query = this.roomRepository.createRoomQuery(
             universityName,
             providerId,
-            depositMin,
-            depositMax,
-            costMin,
-            costMax,
         );
+
+        if (depositMin !== undefined && depositMax !== undefined) {
+            query = this.roomRepository.applyDepositFilter(
+                query,
+                depositMin,
+                depositMax,
+            );
+        }
+
+        if (costMin !== undefined && costMax !== undefined) {
+            query = this.roomRepository.applyCostFilter(
+                query,
+                costMin,
+                costMax,
+            );
+        }
+
+        return await query.getRawMany();
     }
 }

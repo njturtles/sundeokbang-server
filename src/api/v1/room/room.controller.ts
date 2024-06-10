@@ -3,7 +3,6 @@ import { RoomService } from './room.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { Request } from 'express';
 import { Payload } from '../auth/jwt/jwt.payload';
-import { RoomResponseDto } from './dto/roomResponse.dto';
 
 @Controller({ path: 'rooms', version: '1' })
 export class RoomController {
@@ -17,7 +16,7 @@ export class RoomController {
         @Query('depositMax') depositMax?: number,
         @Query('costMin') costMin?: number,
         @Query('costMax') costMax?: number,
-    ): Promise<RoomResponseDto[]> {
+    ): Promise<any[]> {
         const user = req.user as Payload;
         const providerId = user.providerId;
         const universityName = user.university;
