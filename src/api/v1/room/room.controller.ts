@@ -11,18 +11,18 @@ export class RoomController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    async findAllByUniversityNameAndFilters(
+    async findRoomsByUniversityAndFilter(
         @Req() req: Request,
-        @Query('depositMin') depositMin?: number,
-        @Query('depositMax') depositMax?: number,
-        @Query('costMin') costMin?: number,
-        @Query('costMax') costMax?: number,
+        @Query('depositMin') depositMin?: string,
+        @Query('depositMax') depositMax?: string,
+        @Query('costMin') costMin?: string,
+        @Query('costMax') costMax?: string,
     ): Promise<Room[]> {
         const user = req.user as Payload;
         const providerId = user.providerId;
         const universityName = user.university;
 
-        return this.roomService.getRoomsByUserUniversity(
+        return this.roomService.findRoomsByUniversityAndFileters(
             universityName,
             providerId,
             depositMin,

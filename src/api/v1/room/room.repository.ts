@@ -17,11 +17,11 @@ export class RoomRepository extends Repository<Room> {
         );
     }
 
-    public createRoomQuery(
+    public findRoomsByUniversity(
         universityName: string,
         providerId: string,
     ): SelectQueryBuilder<Room> {
-        return this.roomRepository
+        const query = this.roomRepository
             .createQueryBuilder('room')
             .select([
                 'room._id as id',
@@ -42,12 +42,14 @@ export class RoomRepository extends Repository<Room> {
             .leftJoin('room.university', 'university')
             .where('university.name = :universityName', { universityName })
             .setParameter('providerId', providerId);
+
+        return query;
     }
 
-    public applyDepositFilter(
+    public filterByDepositRange(
         query: SelectQueryBuilder<Room>,
-        depositMin: number,
-        depositMax: number,
+        depositMin: string,
+        depositMax: string,
     ): SelectQueryBuilder<Room> {
         return query.andWhere(
             'room.deposit BETWEEN :depositMin AND :depositMax',
@@ -58,10 +60,10 @@ export class RoomRepository extends Repository<Room> {
         );
     }
 
-    public applyCostFilter(
+    public filterByCostRange(
         query: SelectQueryBuilder<Room>,
-        costMin: number,
-        costMax: number,
+        costMin: string,
+        costMax: string, 
     ): SelectQueryBuilder<Room> {
         return query.andWhere('room.cost BETWEEN :costMin AND :costMax', {
             costMin,

@@ -6,21 +6,21 @@ import { Room } from 'src/libs/entity/room/room.entity';
 export class RoomService {
     constructor(private readonly roomRepository: RoomRepository) {}
 
-    async getRoomsByUserUniversity(
+    async findRoomsByUniversityAndFileters(
         universityName: string,
         providerId: string,
-        depositMin?: number,
-        depositMax?: number,
-        costMin?: number,
-        costMax?: number,
+        depositMin?: string,
+        depositMax?: string,
+        costMin?: string,
+        costMax?: string,
     ): Promise<Room[]> {
-        let query = this.roomRepository.createRoomQuery(
+        let query = this.roomRepository.findRoomsByUniversity(
             universityName,
             providerId,
         );
 
         if (depositMin !== undefined && depositMax !== undefined) {
-            query = this.roomRepository.applyDepositFilter(
+            query = this.roomRepository.filterByDepositRange(
                 query,
                 depositMin,
                 depositMax,
@@ -28,13 +28,14 @@ export class RoomService {
         }
 
         if (costMin !== undefined && costMax !== undefined) {
-            query = this.roomRepository.applyCostFilter(
+            query = this.roomRepository.filterByCostRange(
                 query,
                 costMin,
                 costMax,
             );
         }
 
-        return await query.getRawMany();
+        const rooms = await query.getRawMany();
+        return rooms;
     }
 }
