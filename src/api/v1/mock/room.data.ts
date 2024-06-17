@@ -7,10 +7,10 @@ export const rooms = [
         latitude: 34.967338, //위도
         longitude: 127.479688, //경도
         contracttype: '월세', //거래종류
-        deposit: 100, //보증금
-        cost: 30, //월세
+        deposit: 100000, //보증금
+        cost: 300000, //월세
         term: '1년', //계약기간
-        maintenanceCost: 1, //관리비
+        maintenanceCost: 10000, //관리비
         commonArea: '주방', //세대 공동구역
         type: '2인실', //방타입
         exclusiveArea: 16.95, //전용면적
@@ -39,10 +39,10 @@ export const rooms = [
         latitude: 34.970461, //위도
         longitude: 127.484387, //경도
         contracttype: '월세', //거래종류
-        deposit: 200, //보증금
-        cost: 40, //월세
+        deposit: 2000000, //보증금
+        cost: 400000, //월세
         term: '1년', //계약기간
-        maintenanceCost: 1, //관리비
+        maintenanceCost: 10000, //관리비
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 25, //전용면적
@@ -71,10 +71,10 @@ export const rooms = [
         latitude: 34.97152, //위도
         longitude: 127.484045, //경도
         contracttype: '월세', //거래종류
-        deposit: 100, //보증금
-        cost: 35, //월세
+        deposit: 1000000, //보증금
+        cost: 350000, //월세
         term: '1년', //계약기간
-        maintenanceCost: 3, //관리비
+        maintenanceCost: 30000, //관리비
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 27, //전용면적
@@ -103,10 +103,10 @@ export const rooms = [
         latitude: 34.9713, //위도
         longitude: 127.477253, //경도
         contracttype: '월세', //거래종류
-        deposit: 100, //보증금
-        cost: 37, //월세
+        deposit: 1000000, //보증금
+        cost: 370000, //월세
         term: '1년', //계약기간
-        maintenanceCost: 2, //관리비
+        maintenanceCost: 20000, //관리비
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 30.23, //전용면적
@@ -135,10 +135,10 @@ export const rooms = [
         latitude: 34.965131, //위도
         longitude: 127.48246, //경도
         contracttype: '월세', //거래종류
-        deposit: 100, //보증금
-        cost: 50, //월세
+        deposit: 1000000, //보증금
+        cost: 500000, //월세
         term: '1년', //계약기간
-        maintenanceCost: 2, //관리비
+        maintenanceCost: 20000, //관리비
         commonArea: '현관', //세대 공용구역
         type: '1인실', //방타입
         exclusiveArea: 25, //전용면적
