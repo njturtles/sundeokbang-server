@@ -1,38 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { RoomRepository } from './room.repository';
-import { Favorite } from '../../../libs/entity/favorite/favorite.entity';
-import { Repository } from 'typeorm';
-import { RoomResponseDto } from './dto/RoomResponse.dto';
+import { Room } from 'src/libs/entity/room/room.entity';
 
 @Injectable()
 export class RoomService {
-    constructor(
-        @InjectRepository(Favorite)
-        private favoriteRepository: Repository<Favorite>,
-        private roomRepository: RoomRepository,
-    ) {}
+    constructor(private readonly roomRepository: RoomRepository) {}
 
-    async findRoomsByUniversityName(
-        university_name: string,
+    async findRoomsByUniversityAndFileters(
+        universityName: string,
         providerId: string,
-        deposit?: string,
-        cost?: string,
-    ): Promise<RoomResponseDto[]> {
-        const depositRange = deposit
-            ? (deposit.split(',').map(Number) as [number, number])
-            : undefined;
-        const costRange = cost
-            ? (cost.split(',').map(Number) as [number, number])
-            : undefined;
-
-        const rooms = await this.roomRepository.findByUniversityNameAndFilters(
-            university_name,
-            depositRange,
-            costRange,
+        depositMin?: string,
+        depositMax?: string,
+        costMin?: string,
+        costMax?: string,
+    ): Promise<Room[]> {
+        let query = this.roomRepository.findRoomsByUniversity(
+            universityName,
             providerId,
         );
 
+        if (depositMin !== undefined && depositMax !== undefined) {
+            query = this.roomRepository.filterByDepositRange(
+                query,
+                depositMin,
+                depositMax,
+            );
+        }
+
+        if (costMin !== undefined && costMax !== undefined) {
+            query = this.roomRepository.filterByCostRange(
+                query,
+                costMin,
+                costMax,
+            );
+        }
+
+        const rooms = await query.getRawMany();
         return rooms;
     }
 }

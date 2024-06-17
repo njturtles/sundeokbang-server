@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Room } from '../../../libs/entity/room/room.entity';
+import { User } from '../../../libs/entity/user/user.entity';
+import { Favorite } from '../../../libs/entity/favorite/favorite.entity';
 import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoomRepository } from './room.repository';
-import { Room } from '../../../libs/entity/room/room.entity';
-import { Favorite } from '../../../libs/entity/favorite/favorite.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Room, Favorite])],
+    imports: [TypeOrmModule.forFeature([Room, User, Favorite])],
     providers: [RoomService, RoomRepository],
     controllers: [RoomController],
-    exports: [RoomService],
 })
 export class RoomModule {}

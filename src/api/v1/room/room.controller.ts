@@ -3,7 +3,7 @@ import { RoomService } from './room.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { Request } from 'express';
 import { Payload } from '../auth/jwt/jwt.payload';
-import { RoomResponseDto } from './dto/RoomResponse.dto';
+import { Room } from 'src/libs/entity/room/room.entity';
 
 @Controller({ path: 'rooms', version: '1' })
 export class RoomController {
@@ -11,20 +11,24 @@ export class RoomController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    async findAllByUniversityNameAndFilters(
+    async findRoomsByUniversityAndFilter(
         @Req() req: Request,
-        @Query('deposit') deposit?: string,
-        @Query('cost') cost?: string,
-    ): Promise<RoomResponseDto[]> {
+        @Query('depositMin') depositMin?: string,
+        @Query('depositMax') depositMax?: string,
+        @Query('costMin') costMin?: string,
+        @Query('costMax') costMax?: string,
+    ): Promise<Room[]> {
         const user = req.user as Payload;
-        const university_name = user.university;
         const providerId = user.providerId;
+        const universityName = user.university;
 
-        return this.roomService.findRoomsByUniversityName(
-            university_name,
+        return this.roomService.findRoomsByUniversityAndFileters(
+            universityName,
             providerId,
-            deposit,
-            cost,
+            depositMin,
+            depositMax,
+            costMin,
+            costMax,
         );
     }
 }
