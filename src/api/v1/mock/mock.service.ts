@@ -9,22 +9,23 @@ import { Room } from './room.interface';
 export class MockService {
     private rooms: Room[] = rooms;
 
-    //원룸상세보기
+    // 원룸 상세보기
     async findOneByRoomId(id: number): Promise<Room> {
         const room = this.rooms.find((room) => room._id === id);
         if (!room) {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
-                message: '해당원룸을 찾을 수 없습니다',
+                message: '해당 원룸을 찾을 수 없습니다',
             });
         }
         return room;
     }
 
-    //특정학교 원룸조회
-    async findRoomsByUniversitylName(
-        university_name: string,
-        depositRange?: [number, number],
-        costRange?: [number, number],
+    // 특정 학교 원룸 조회
+    async findRoomsByPrice(
+        minDeposit?: number,
+        maxDeposit?: number,
+        minCost?: number,
+        maxCost?: number,
     ): Promise<
         {
             _id: number;
@@ -37,26 +38,29 @@ export class MockService {
             imageUrls: string[];
         }[]
     > {
-        let filteredRooms = this.rooms.filter(
-            (room) => room.university_name === university_name,
-        );
+        let filterPrice = this.rooms;
 
-        if (depositRange) {
-            filteredRooms = filteredRooms.filter(
-                (room) =>
-                    room.deposit >= depositRange[0] &&
-                    room.deposit <= depositRange[1],
+        if (minDeposit !== undefined) {
+            filterPrice = filterPrice.filter(
+                (room) => room.deposit >= minDeposit,
             );
         }
 
-        if (costRange) {
-            filteredRooms = filteredRooms.filter(
-                (room) =>
-                    room.cost >= costRange[0] && room.cost <= costRange[1],
+        if (maxDeposit !== undefined) {
+            filterPrice = filterPrice.filter(
+                (room) => room.deposit <= maxDeposit,
             );
         }
 
-        const filteredRoomsResult = filteredRooms.map((room) => ({
+        if (minCost !== undefined) {
+            filterPrice = filterPrice.filter((room) => room.cost >= minCost);
+        }
+
+        if (maxCost !== undefined) {
+            filterPrice = filterPrice.filter((room) => room.cost <= maxCost);
+        }
+
+        const filterRooms = filterPrice.map((room) => ({
             _id: room._id,
             name: room.name,
             address: room.address,
@@ -67,11 +71,12 @@ export class MockService {
             imageUrls: room.imageUrls,
         }));
 
-        if (filteredRooms.length === 0) {
+        if (filterRooms.length === 0) {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
                 message: '해당 학교의 원룸을 찾을 수 없습니다',
             });
         }
-        return filteredRoomsResult;
+
+        return filterRooms;
     }
 }
