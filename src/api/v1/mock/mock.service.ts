@@ -35,13 +35,11 @@ export class MockService {
             longitude: number;
             deposit: number;
             cost: number;
-            imageUrl: string[0];
+            imageUrl: string;
             isFavorite: boolean;
         }[]
     > {
-        let filterPrice = this.rooms;
-
-        filterPrice = filterPrice.filter(
+        let filterPrice = this.rooms.filter(
             (room) =>
                 room.deposit >= minDeposit &&
                 room.deposit <= maxDeposit &&
@@ -70,8 +68,13 @@ export class MockService {
         return filterRooms;
     }
 
-    //즐겨찾기 조회
-    async findRoomsByFavorites(): Promise<
+    //즐겨찾기 조회 및 필터링
+    async findRoomsByFavorites(
+        minDeposit: number,
+        maxDeposit: number,
+        minCost: number,
+        maxCost: number,
+    ): Promise<
         {
             id: number;
             name: string;
@@ -80,15 +83,20 @@ export class MockService {
             longitude: number;
             deposit: number;
             cost: number;
-            imageUrl: string[0];
+            imageUrl: string;
             isFavorite: boolean;
         }[]
     > {
-        const filterFavorites = await this.rooms.filter(
-            (room) => room.isFavorite == true,
+        let filterPriceAndFavorites = this.rooms.filter(
+            (room) =>
+                room.deposit >= minDeposit &&
+                room.deposit <= maxDeposit &&
+                room.cost >= minCost &&
+                room.cost <= maxCost &&
+                room.isFavorite === true,
         );
 
-        const filterFavoriteRooms = filterFavorites.map((room) => ({
+        const filterFavoriteRooms = filterPriceAndFavorites.map((room) => ({
             id: room._id,
             name: room.name,
             address: room.address,

@@ -30,42 +30,32 @@ export class MockController {
         minCost: number,
         @Query('maxCost', new DefaultValuePipe(100000000), ParseIntPipe)
         maxCost: number,
-    ): Promise<
-        {
-            id: number;
-            name: string;
-            address: string;
-            latitude: number;
-            longitude: number;
-            deposit: number;
-            cost: number;
-            imageUrl: string[0];
-            isFavorite: boolean;
-        }[]
-    > {
-        const rooms = await this.mockService.findRoomsByPriceFilter(
+    ) {
+        return this.mockService.findRoomsByPriceFilter(
             minDeposit,
             maxDeposit,
             minCost,
             maxCost,
         );
-        return rooms;
     }
 
+    //즐겨찾기 조회 및 필터링
     @Get('favorites')
-    async findRoomsByFavorites(): Promise<
-        {
-            id: number;
-            name: string;
-            address: string;
-            latitude: number;
-            longitude: number;
-            deposit: number;
-            cost: number;
-            imageUrl: string[0];
-            isFavorite: boolean;
-        }[]
-    > {
-        return this.mockService.findRoomsByFavorites();
+    async findRoomsByFavorites(
+        @Query('minDeposit', new DefaultValuePipe(0), ParseIntPipe)
+        minDeposit: number,
+        @Query('maxDeposit', new DefaultValuePipe(100000000), ParseIntPipe)
+        maxDeposit: number,
+        @Query('minCost', new DefaultValuePipe(0), ParseIntPipe)
+        minCost: number,
+        @Query('maxCost', new DefaultValuePipe(100000000), ParseIntPipe)
+        maxCost: number,
+    ) {
+        return this.mockService.findRoomsByFavorites(
+            minDeposit,
+            maxDeposit,
+            minCost,
+            maxCost,
+        );
     }
 }
