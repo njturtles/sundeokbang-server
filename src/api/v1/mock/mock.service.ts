@@ -28,14 +28,14 @@ export class MockService {
         maxCost: number,
     ): Promise<
         {
-            _id: number;
+            id: number;
             name: string;
             address: string;
             latitude: number;
             longitude: number;
             deposit: number;
             cost: number;
-            imageUrls: string[];
+            imageUrl: string[0];
         }[]
     > {
         let filterPrice = this.rooms;
@@ -49,14 +49,14 @@ export class MockService {
         );
 
         const filterRooms = filterPrice.map((room) => ({
-            _id: room._id,
+            id: room._id,
             name: room.name,
             address: room.address,
             latitude: room.latitude,
             longitude: room.longitude,
             deposit: room.deposit,
             cost: room.cost,
-            imageUrls: room.imageUrls,
+            imageUrl: room.imageUrls[0],
         }));
 
         if (filterRooms.length === 0) {

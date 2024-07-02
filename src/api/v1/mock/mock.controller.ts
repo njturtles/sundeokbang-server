@@ -21,14 +21,14 @@ export class MockController {
         @Query('maxCost', new DefaultValuePipe(100000000), ParseIntPipe) maxCost: number,
     ): Promise<
         {
-            _id: number;
+            id: number;
             name: string;
             address: string;
             latitude: number;
             longitude: number;
             deposit: number;
             cost: number;
-            imageUrls: string[];
+            imageUrl: string[0];
         }[]
     > {
         const rooms = await this.mockService.findRoomsByPriceFilter(

@@ -7,7 +7,7 @@ export const rooms = [
         latitude: 34.967338, //위도
         longitude: 127.479688, //경도
         contracttype: '월세', //거래종류
-        deposit: 100000, //보증금
+        deposit: 1000000, //보증금
         cost: 300000, //월세
         term: '1년', //계약기간
         maintenanceCost: 10000, //관리비
@@ -103,7 +103,7 @@ export const rooms = [
         latitude: 34.9713, //위도
         longitude: 127.477253, //경도
         contracttype: '월세', //거래종류
-        deposit: 1000000, //보증금
+        deposit: 2000000, //보증금
         cost: 370000, //월세
         term: '1년', //계약기간
         maintenanceCost: 20000, //관리비
