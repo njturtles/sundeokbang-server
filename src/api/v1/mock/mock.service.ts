@@ -20,12 +20,12 @@ export class MockService {
         return room;
     }
 
-    // 특정 학교 원룸 조회
-    async findRoomsByPrice(
-        minDeposit?: number,
-        maxDeposit?: number,
-        minCost?: number,
-        maxCost?: number,
+    //월세,전세 필터링 조회
+    async findRoomsByPriceFilter(
+        minDeposit: number,
+        maxDeposit: number,
+        minCost: number,
+        maxCost: number,
     ): Promise<
         {
             _id: number;
@@ -40,25 +40,13 @@ export class MockService {
     > {
         let filterPrice = this.rooms;
 
-        if (minDeposit !== undefined) {
-            filterPrice = filterPrice.filter(
-                (room) => room.deposit >= minDeposit,
-            );
-        }
-
-        if (maxDeposit !== undefined) {
-            filterPrice = filterPrice.filter(
-                (room) => room.deposit <= maxDeposit,
-            );
-        }
-
-        if (minCost !== undefined) {
-            filterPrice = filterPrice.filter((room) => room.cost >= minCost);
-        }
-
-        if (maxCost !== undefined) {
-            filterPrice = filterPrice.filter((room) => room.cost <= maxCost);
-        }
+        filterPrice = filterPrice.filter(
+            (room) =>
+                room.deposit >= minDeposit &&
+                room.deposit <= maxDeposit &&
+                room.cost >= minCost &&
+                room.cost <= maxCost,
+        );
 
         const filterRooms = filterPrice.map((room) => ({
             _id: room._id,

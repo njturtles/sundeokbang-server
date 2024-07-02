@@ -1,25 +1,24 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { MockService } from './mock.service';
-import { Room } from './room.interface';
 
 @Controller({ path: 'mock', version: '1' })
 export class MockController {
     constructor(private readonly mockService: MockService) {}
 
     // 특정원룸 조회
-    @Get('rooms/:id')
+    @Get('room/:id')
     async findOneByRoomId(@Param('id', ParseIntPipe) id: number) {
         const room = await this.mockService.findOneByRoomId(id);
         return room;
     }
 
     // 월세,전세 필터링 조회
-    @Get()
-    async findRoomsByUniversitylName(
-        @Query('minDepoist') minDepoist?: string,
-        @Query('maxDeposit') maxDeposit?: string,
-        @Query('minCost') minCost?: string,
-        @Query('maxCost') maxCost?: string,
+    @Get('rooms')
+    async findRoomsByUniversity(
+        @Query('minDeposit', new DefaultValuePipe(0), ParseIntPipe) minDeposit: number,
+        @Query('maxDeposit', new DefaultValuePipe(100000000), ParseIntPipe) maxDeposit: number,
+        @Query('minCost', new DefaultValuePipe(0), ParseIntPipe) minCost: number,
+        @Query('maxCost', new DefaultValuePipe(100000000), ParseIntPipe) maxCost: number,
     ): Promise<
         {
             _id: number;
@@ -32,16 +31,11 @@ export class MockController {
             imageUrls: string[];
         }[]
     > {
-        const minDepositPrice = minDepoist ? Number(minDepoist) : undefined;
-        const maxDepositPrice = maxDeposit ? Number(maxDeposit) : undefined;
-        const minCostPrice = minCost ? Number(minCost) : undefined;
-        const maxCostPrice = maxCost ? Number(maxCost) : undefined;
-
-        const rooms = await this.mockService.findRoomsByPrice(
-            minDepositPrice,
-            maxDepositPrice,
-            minCostPrice,
-            maxCostPrice,
+        const rooms = await this.mockService.findRoomsByPriceFilter(
+            minDeposit,
+            maxDeposit,
+            minCost,
+            maxCost,
         );
         return rooms;
     }
