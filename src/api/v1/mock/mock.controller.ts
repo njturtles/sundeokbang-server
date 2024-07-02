@@ -1,4 +1,11 @@
-import { Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+    Controller,
+    DefaultValuePipe,
+    Get,
+    Param,
+    ParseIntPipe,
+    Query,
+} from '@nestjs/common';
 import { MockService } from './mock.service';
 
 @Controller({ path: 'mock', version: '1' })
@@ -15,10 +22,14 @@ export class MockController {
     // 월세,전세 필터링 조회
     @Get('rooms')
     async findRoomsByUniversity(
-        @Query('minDeposit', new DefaultValuePipe(0), ParseIntPipe) minDeposit: number,
-        @Query('maxDeposit', new DefaultValuePipe(100000000), ParseIntPipe) maxDeposit: number,
-        @Query('minCost', new DefaultValuePipe(0), ParseIntPipe) minCost: number,
-        @Query('maxCost', new DefaultValuePipe(100000000), ParseIntPipe) maxCost: number,
+        @Query('minDeposit', new DefaultValuePipe(0), ParseIntPipe)
+        minDeposit: number,
+        @Query('maxDeposit', new DefaultValuePipe(100000000), ParseIntPipe)
+        maxDeposit: number,
+        @Query('minCost', new DefaultValuePipe(0), ParseIntPipe)
+        minCost: number,
+        @Query('maxCost', new DefaultValuePipe(100000000), ParseIntPipe)
+        maxCost: number,
     ): Promise<
         {
             id: number;
@@ -29,6 +40,7 @@ export class MockController {
             deposit: number;
             cost: number;
             imageUrl: string[0];
+            isFavorite: boolean;
         }[]
     > {
         const rooms = await this.mockService.findRoomsByPriceFilter(
@@ -38,5 +50,22 @@ export class MockController {
             maxCost,
         );
         return rooms;
+    }
+
+    @Get('favorites')
+    async findRoomsByFavorites(): Promise<
+        {
+            id: number;
+            name: string;
+            address: string;
+            latitude: number;
+            longitude: number;
+            deposit: number;
+            cost: number;
+            imageUrl: string[0];
+            isFavorite: boolean;
+        }[]
+    > {
+        return this.mockService.findRoomsByFavorites();
     }
 }

@@ -36,6 +36,7 @@ export class MockService {
             deposit: number;
             cost: number;
             imageUrl: string[0];
+            isFavorite: boolean;
         }[]
     > {
         let filterPrice = this.rooms;
@@ -57,6 +58,7 @@ export class MockService {
             deposit: room.deposit,
             cost: room.cost,
             imageUrl: room.imageUrls[0],
+            isFavorite: room.isFavorite,
         }));
 
         if (filterRooms.length === 0) {
@@ -66,5 +68,38 @@ export class MockService {
         }
 
         return filterRooms;
+    }
+
+    //즐겨찾기 조회
+    async findRoomsByFavorites(): Promise<
+        {
+            id: number;
+            name: string;
+            address: string;
+            latitude: number;
+            longitude: number;
+            deposit: number;
+            cost: number;
+            imageUrl: string[0];
+            isFavorite: boolean;
+        }[]
+    > {
+        const filterFavorites = await this.rooms.filter(
+            (room) => room.isFavorite == true,
+        );
+
+        const filterFavoriteRooms = filterFavorites.map((room) => ({
+            id: room._id,
+            name: room.name,
+            address: room.address,
+            latitude: room.latitude,
+            longitude: room.longitude,
+            deposit: room.deposit,
+            cost: room.cost,
+            imageUrl: room.imageUrls[0],
+            isFavorite: room.isFavorite,
+        }));
+
+        return filterFavoriteRooms;
     }
 }

@@ -30,6 +30,7 @@ export const rooms = [
         ],
         createdAt: new Date(),
         updatedAt: new Date(),
+        isFavorite: true,
     },
     {
         _id: 2,
@@ -62,6 +63,7 @@ export const rooms = [
         ],
         createdAt: new Date(),
         updatedAt: new Date(),
+        isFavorite: false,
     },
     {
         _id: 3,
@@ -94,6 +96,7 @@ export const rooms = [
         ],
         createdAt: new Date(),
         updatedAt: new Date(),
+        isFavorite: true,
     },
     {
         _id: 4,
@@ -126,6 +129,7 @@ export const rooms = [
         ],
         createdAt: new Date(),
         updatedAt: new Date(),
+        isFavorite: true,
     },
     {
         _id: 5,
@@ -158,5 +162,6 @@ export const rooms = [
         ],
         createdAt: new Date(),
         updatedAt: new Date(),
+        isFavorite: false,
     },
 ];

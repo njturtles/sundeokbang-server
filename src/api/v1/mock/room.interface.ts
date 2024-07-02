@@ -25,4 +25,5 @@ export interface Room {
     imageUrls: string[];
     createdAt: Date;
     updatedAt: Date;
+    isFavorite: boolean;
 }
