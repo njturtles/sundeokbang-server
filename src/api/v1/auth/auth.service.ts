@@ -17,7 +17,7 @@ export class AuthService {
             userName: user?.name,
             university: user?.university?.name,
             latitude: user?.university?.latitude,
-            longtitude: user?.university?.longtitude,
+            longitude: user?.university?.longitude,
         };
     }
 

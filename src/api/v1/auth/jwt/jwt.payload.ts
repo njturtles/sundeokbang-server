@@ -3,5 +3,5 @@ export interface Payload {
     userName: string;
     university: string;
     latitude: number;
-    longtitude: number;
+    longitude: number;
 }

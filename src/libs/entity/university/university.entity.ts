@@ -12,7 +12,7 @@ export class University extends BaseTimeEntity {
     latitude: number;
 
     @Column({ type: 'decimal', precision: 12, scale: 6 })
-    longtitude: number;
+    longitude: number;
 
     @OneToMany(() => User, (user) => user.university)
     users: User[];
