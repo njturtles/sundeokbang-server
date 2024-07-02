@@ -6,7 +6,7 @@ import { BaseTimeEntity } from '../BaseTimeEntity';
 @Entity('favorites')
 export class Favorite extends BaseTimeEntity {
     @ManyToOne(() => User, (user) => user.favorites)
-    @JoinColumn({ name: 'user_id' })
+    @JoinColumn({ name: 'user_providerId', referencedColumnName: 'providerId' })
     user: User;
 
     @ManyToOne(() => Room, (room) => room.favorites)
