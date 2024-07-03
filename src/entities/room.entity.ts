@@ -1,8 +1,15 @@
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
-import { Favorite } from '../favorite/favorite.entity';
-import { BaseTimeEntity } from '../BaseTimeEntity';
-import { University } from '../university/university.entity';
-import { File } from '../file/file.entity';
+import {
+    Entity,
+    Column,
+    OneToMany,
+    ManyToOne,
+    JoinTable,
+    ManyToMany,
+} from 'typeorm';
+import { BaseTimeEntity } from './BaseTimeEntity';
+import { University } from './university.entity';
+import { File } from './file.entity';
+import { User } from './user.entity';
 
 @Entity('rooms')
 export class Room extends BaseTimeEntity {
@@ -75,6 +82,7 @@ export class Room extends BaseTimeEntity {
     @OneToMany(() => File, (file) => file.room)
     files: File[];
 
-    @OneToMany(() => Favorite, (favorite) => favorite.room)
-    favorites: Favorite[];
+    @ManyToMany(() => User, (user) => user.favorites, { eager: true })
+    @JoinTable()
+    favoritedBy: User[];
 }

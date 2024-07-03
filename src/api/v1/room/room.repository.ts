@@ -1,73 +1,53 @@
-import { Repository, DataSource, SelectQueryBuilder } from 'typeorm';
-import { Room } from '../../../libs/entity/room/room.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Between, Repository } from 'typeorm';
+import { Room } from '../../../entities/room.entity';
+import { instanceToPlain } from 'class-transformer';
+import { RoomResponse } from './room.interface';
 
 @Injectable()
 export class RoomRepository extends Repository<Room> {
     constructor(
         @InjectRepository(Room)
-        private readonly roomRepository: Repository<Room>,
-        private dataSource: DataSource,
+        private readonly repository: Repository<Room>,
     ) {
-        super(
-            roomRepository.target,
-            roomRepository.manager,
-            roomRepository.queryRunner,
-        );
+        super(repository.target, repository.manager, repository.queryRunner);
     }
 
-    public findRoomsByUniversity(
+    async findByUniversityName(
         universityName: string,
-        providerId: string,
-    ): SelectQueryBuilder<Room> {
-        const query = this.roomRepository
-            .createQueryBuilder('room')
-            .select([
-                'room._id as id',
-                'room.latitude as latitude',
-                'room.longitude as longitude',
-                'room.name as name',
-                'room.address as address',
-                'room.deposit as deposit',
-                'room.cost as cost',
-                `(SELECT url FROM files WHERE files.room_id = room._id LIMIT 1) as imageUrl`,
-                `CASE WHEN EXISTS (
-                    SELECT 1 
-                    FROM favorites favorite 
-                    WHERE favorite.room_id = room._id 
-                    AND favorite.user_id = (SELECT user._id FROM users user WHERE user.providerId = :providerId)
-                ) THEN 1 ELSE 0 END as isFavorite`,
-            ])
-            .leftJoin('room.university', 'university')
-            .where('university.name = :universityName', { universityName })
-            .setParameter('providerId', providerId);
-
-        return query;
-    }
-
-    public filterByDepositRange(
-        query: SelectQueryBuilder<Room>,
-        depositMin: string,
-        depositMax: string,
-    ): SelectQueryBuilder<Room> {
-        return query.andWhere(
-            'room.deposit BETWEEN :depositMin AND :depositMax',
-            {
-                depositMin,
-                depositMax,
+        minDeposit: number,
+        maxDeposit: number,
+        minCost: number,
+        maxCost: number,
+    ): Promise<[Room[], number]> {
+        return this.repository.findAndCount({
+            where: {
+                university: { name: universityName },
+                deposit: Between(minDeposit, maxDeposit),
+                cost: Between(minCost, maxCost),
             },
-        );
+            relations: ['files'],
+            select: [
+                '_id',
+                'name',
+                'address',
+                'latitude',
+                'longitude',
+                'contractType',
+                'deposit',
+                'cost',
+            ],
+        });
     }
 
-    public filterByCostRange(
-        query: SelectQueryBuilder<Room>,
-        costMin: string,
-        costMax: string, 
-    ): SelectQueryBuilder<Room> {
-        return query.andWhere('room.cost BETWEEN :costMin AND :costMax', {
-            costMin,
-            costMax,
-        });
+    async toRoom(room: Room, userId: number): Promise<RoomResponse> {
+        let favorited = false;
+
+        favorited = room.favoritedBy.map((user) => user._id).includes(userId);
+
+        const roomData: any = instanceToPlain(room);
+        delete roomData.favoritedBy;
+        return { ...roomData, favorited };
     }
 }

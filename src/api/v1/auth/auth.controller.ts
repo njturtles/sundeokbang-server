@@ -5,7 +5,7 @@ import { JwtAuthGuard } from './jwt/jwt.guard';
 import { UserService } from '../user/user.service';
 import { Payload } from './jwt/jwt.payload';
 import { AuthService } from './auth.service';
-import { User } from '../../../libs/entity/user/user.entity';
+import { User } from '../../../entities/user.entity';
 
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
@@ -40,7 +40,7 @@ export class AuthController {
         const userPayload = req.user as Payload;
 
         const updateUser = await this.userService.updateUserInfo(
-            userPayload.providerId,
+            userPayload.userId,
             university,
             userName,
         );

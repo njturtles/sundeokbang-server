@@ -1,7 +1,7 @@
 export interface Payload {
-    providerId: string;
+    userId: number;
     userName: string;
     university: string;
     latitude: number;
-    longtitude: number;
+    longitude: number;
 }

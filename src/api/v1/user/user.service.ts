@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../../libs/entity/user/user.entity';
+import { User } from '../../../entities/user.entity';
 import { Repository } from 'typeorm';
-import { University } from '../../../libs/entity/university/university.entity';
+import { University } from '../../../entities/university.entity';
 import ApiError from '../../../libs/common-config/res/api.error';
 import ApiCodes from '../../../libs/common-config/res/api.codes';
 import ApiMessages from '../../../libs/common-config/res/api.messages';
@@ -13,6 +13,13 @@ export class UserService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
     ) {}
+
+    async findOneById(userId: number): Promise<User> {
+        return this.userRepository.findOne({
+            where: { _id: userId },
+            relations: ['university'],
+        });
+    }
 
     async findOneByProviderId(providerId: string): Promise<User> {
         return this.userRepository.findOne({
@@ -27,11 +34,11 @@ export class UserService {
     }
 
     async updateUserInfo(
-        providerId: string,
+        userId: number,
         university: string,
         userName?: string,
     ) {
-        const user = await this.findOneByProviderId(providerId);
+        const user = await this.findOneById(userId);
 
         if (userName) {
             user.name = userName;
