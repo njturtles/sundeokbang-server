@@ -1,7 +1,7 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseTimeEntity } from '../BaseTimeEntity';
-import { User } from '../user/user.entity';
-import { Room } from '../room/room.entity';
+import { BaseTimeEntity } from './BaseTimeEntity';
+import { User } from './user.entity';
+import { Room } from './room.entity';
 
 @Entity('university')
 export class University extends BaseTimeEntity {

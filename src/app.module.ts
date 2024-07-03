@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { getMysqlTypeOrmModule } from './libs/entity/getMysqlTypeOrmModule';
+import { getMysqlTypeOrmModule } from './getMysqlTypeOrmModule';
 import { ConfigModule } from '@nestjs/config';
 import { V1Module } from './api/v1/v1.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
