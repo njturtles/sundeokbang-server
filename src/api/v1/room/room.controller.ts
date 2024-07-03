@@ -6,6 +6,7 @@ import {
     Query,
     ParseIntPipe,
     DefaultValuePipe,
+    Param,
 } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
@@ -31,15 +32,27 @@ export class RoomController {
     ): Promise<{ count; rows }> {
         const user = req.user as Payload;
         const universityName = user.university;
-        const providerId = user.providerId;
+        const userId = user.userId;
 
         return this.roomService.findByUniversityName(
             universityName,
-            providerId,
+            userId,
             minDeposit,
             maxDeposit,
             minCost,
             maxCost,
         );
+    }
+
+    @Get(':id')
+    @UseGuards(JwtAuthGuard)
+    async findOneById(
+        @Req() req: Request,
+        @Param('id', ParseIntPipe) id: number,
+    ): Promise<any> {
+        const user = req.user as Payload;
+        const userId = user.userId;
+
+        return this.roomService.findOneById(id, userId);
     }
 }
