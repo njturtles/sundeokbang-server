@@ -1,30 +1,25 @@
-import {
-    Body,
-    Controller,
-    Get,
-    Param,
-    ParseIntPipe,
-    Query,
-} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { MockService } from './mock.service';
+import { Room } from './room.interface';
 
 @Controller({ path: 'mock', version: '1' })
 export class MockController {
     constructor(private readonly mockService: MockService) {}
 
-    //특정원룸 조회
+    // 특정원룸 조회
     @Get('rooms/:id')
     async findOneByRoomId(@Param('id', ParseIntPipe) id: number) {
         const room = await this.mockService.findOneByRoomId(id);
         return room;
     }
 
-    //특정대학 원룸조회
-    @Get('rooms')
+    // 월세,전세 필터링 조회
+    @Get()
     async findRoomsByUniversitylName(
-        @Query('university_name') university_name: string,
-        @Query('deposit') deposit?: string,
-        @Query('cost') cost?: string,
+        @Query('minDepoist') minDepoist?: string,
+        @Query('maxDeposit') maxDeposit?: string,
+        @Query('minCost') minCost?: string,
+        @Query('maxCost') maxCost?: string,
     ): Promise<
         {
             _id: number;
@@ -37,23 +32,16 @@ export class MockController {
             imageUrls: string[];
         }[]
     > {
-        let depositRange: [number, number] | undefined;
-        let costRange: [number, number] | undefined;
+        const minDepositPrice = minDepoist ? Number(minDepoist) : undefined;
+        const maxDepositPrice = maxDeposit ? Number(maxDeposit) : undefined;
+        const minCostPrice = minCost ? Number(minCost) : undefined;
+        const maxCostPrice = maxCost ? Number(maxCost) : undefined;
 
-        if (deposit) {
-            const [minDeposit, maxDeposit] = deposit.split(',').map(Number);
-            depositRange = [minDeposit, maxDeposit];
-        }
-
-        if (cost) {
-            const [minCost, maxCost] = cost.split(',').map(Number);
-            costRange = [minCost, maxCost];
-        }
-
-        const rooms = await this.mockService.findRoomsByUniversitylName(
-            university_name,
-            depositRange,
-            costRange,
+        const rooms = await this.mockService.findRoomsByPrice(
+            minDepositPrice,
+            maxDepositPrice,
+            minCostPrice,
+            maxCostPrice,
         );
         return rooms;
     }
