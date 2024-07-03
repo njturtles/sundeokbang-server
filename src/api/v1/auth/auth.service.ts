@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Payload } from './jwt/jwt.payload';
-import { User } from '../../../libs/entity/user/user.entity';
+import { User } from '../../../entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class AuthService {
 
     createPayload(user: User): Payload {
         return {
-            providerId: user?.providerId,
+            userId: user?._id,
             userName: user?.name,
             university: user?.university?.name,
             latitude: user?.university?.latitude,
