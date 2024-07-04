@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
 import { Room } from '../../../entities/room.entity';
-import { instanceToPlain } from 'class-transformer';
-import { RoomResponse } from './room.interface';
 
 @Injectable()
 export class RoomRepository extends Repository<Room> {
@@ -39,15 +37,5 @@ export class RoomRepository extends Repository<Room> {
                 'cost',
             ],
         });
-    }
-
-    async toRoom(room: Room, userId: number): Promise<RoomResponse> {
-        let favorited = false;
-
-        favorited = room.favoritedBy.map((user) => user._id).includes(userId);
-
-        const roomData: any = instanceToPlain(room);
-        delete roomData.favoritedBy;
-        return { ...roomData, favorited };
     }
 }

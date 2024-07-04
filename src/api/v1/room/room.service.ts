@@ -26,7 +26,7 @@ export class RoomService {
         );
 
         const roomList = await Promise.all(
-            rooms.map((room) => this.roomRepository.toRoom(room, userId)),
+            rooms.map((room) => room.toRoom(userId)),
         );
 
         return { count, rows: roomList };
@@ -42,6 +42,6 @@ export class RoomService {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND);
         }
 
-        return this.roomRepository.toRoom(room, userId);
+        return room.toRoom(userId);
     }
 }
