@@ -1,7 +1,6 @@
 import {
     Controller,
     Get,
-    Req,
     UseGuards,
     Query,
     ParseIntPipe,
@@ -10,8 +9,9 @@ import {
 } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
-import { Request } from 'express';
 import { Payload } from '../auth/jwt/jwt.payload';
+import { User } from '../../../libs/decorators/user.decorator';
+import { RoomList, RoomResponse } from './room.interface';
 
 @Controller({ path: 'rooms', version: '1' })
 export class RoomController {
@@ -20,7 +20,7 @@ export class RoomController {
     @Get()
     @UseGuards(JwtAuthGuard)
     async findAllByUniversityName(
-        @Req() req: Request,
+        @User() user: Payload,
         @Query('minDeposit', new DefaultValuePipe(0), ParseIntPipe)
         minDeposit: number,
         @Query('maxDeposit', new DefaultValuePipe(7000000), ParseIntPipe)
@@ -29,8 +29,7 @@ export class RoomController {
         minCost?: number,
         @Query('maxCost', new DefaultValuePipe(10000000), ParseIntPipe)
         maxCost?: number,
-    ): Promise<{ count; rows }> {
-        const user = req.user as Payload;
+    ): Promise<RoomList> {
         const universityName = user.university;
         const userId = user.userId;
 
@@ -47,12 +46,9 @@ export class RoomController {
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     async findOneById(
-        @Req() req: Request,
+        @User() user: Payload,
         @Param('id', ParseIntPipe) id: number,
-    ): Promise<any> {
-        const user = req.user as Payload;
-        const userId = user.userId;
-
-        return this.roomService.findOneById(id, userId);
+    ): Promise<RoomResponse> {
+        return this.roomService.findOneById(id, user.userId);
     }
 }
