@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
 import { Room } from '../../../entities/room.entity';
+import { FindRoomsQueryDto } from './dto/FindRoomsQuery.dto';
 
 @Injectable()
 export class RoomRepository extends Repository<Room> {
@@ -14,16 +15,13 @@ export class RoomRepository extends Repository<Room> {
 
     async findByUniversityName(
         universityName: string,
-        minDeposit: number,
-        maxDeposit: number,
-        minCost: number,
-        maxCost: number,
+        query: FindRoomsQueryDto,
     ): Promise<[Room[], number]> {
         return this.repository.findAndCount({
             where: {
                 university: { name: universityName },
-                deposit: Between(minDeposit, maxDeposit),
-                cost: Between(minCost, maxCost),
+                deposit: Between(query.minDeposit, query.maxDeposit),
+                cost: Between(query.minCost, query.maxCost),
             },
             relations: ['files'],
             select: [

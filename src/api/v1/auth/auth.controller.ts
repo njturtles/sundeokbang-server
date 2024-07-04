@@ -6,6 +6,7 @@ import { Payload } from './jwt/jwt.payload';
 import { AuthService } from './auth.service';
 import { User } from '../../../libs/decorators/user.decorator';
 import { User as UserEntity } from '../../../entities/user.entity';
+import { ProfileUserDto } from './dto/ProfileUser.dto';
 
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
@@ -33,13 +34,13 @@ export class AuthController {
 
     @Post('profile')
     @UseGuards(JwtAuthGuard)
-    async postMoreUserInfo(@User() user: Payload, @Body() body) {
-        const { userName, university } = body;
-
+    async postMoreUserInfo(
+        @User() user: Payload,
+        @Body() profileDto: ProfileUserDto,
+    ) {
         const updateUser = await this.userService.updateUserInfo(
             user.userId,
-            university,
-            userName,
+            profileDto,
         );
 
         const payload: Payload = this.authService.createPayload(updateUser);
