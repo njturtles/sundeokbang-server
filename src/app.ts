@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as httpContext from 'express-http-context';
 import * as cookieParser from 'cookie-parser';
 
@@ -34,6 +34,14 @@ async function bootstrap() {
     app.enableVersioning({
         type: VersioningType.URI,
     });
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            whitelist: true,
+            forbidNonWhitelisted: true,
+        }),
+    );
 
     await app.listen(port);
 }

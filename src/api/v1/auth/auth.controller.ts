@@ -1,11 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 import { UserService } from '../user/user.service';
 import { Payload } from './jwt/jwt.payload';
 import { AuthService } from './auth.service';
-import { User } from '../../../entities/user.entity';
+import { User } from '../../../libs/decorators/user.decorator';
+import { User as UserEntity } from '../../../entities/user.entity';
+import { ProfileUserDto } from './dto/ProfileUser.dto';
 
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
@@ -21,9 +22,7 @@ export class AuthController {
 
     @Get('oauth/kakao/callback')
     @UseGuards(AuthGuard('kakao'))
-    async kakaoLoginCallBack(@Req() req: Request) {
-        const user = req.user as User;
-
+    async kakaoLoginCallBack(@User() user: UserEntity) {
         const payload: Payload = this.authService.createPayload(user);
 
         const accessToken = this.authService.signToken(payload);
@@ -35,14 +34,13 @@ export class AuthController {
 
     @Post('profile')
     @UseGuards(JwtAuthGuard)
-    async postMoreUserInfo(@Req() req: Request, @Body() body) {
-        const { userName, university } = body;
-        const userPayload = req.user as Payload;
-
+    async postMoreUserInfo(
+        @User() user: Payload,
+        @Body() profileDto: ProfileUserDto,
+    ) {
         const updateUser = await this.userService.updateUserInfo(
-            userPayload.userId,
-            university,
-            userName,
+            user.userId,
+            profileDto,
         );
 
         const payload: Payload = this.authService.createPayload(updateUser);

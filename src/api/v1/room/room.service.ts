@@ -4,6 +4,7 @@ import ApiCodes from '../../../libs/common-config/res/api.codes';
 import ApiMessages from '../../../libs/common-config/res/api.messages';
 import { RoomRepository } from './room.repository';
 import { RoomList, RoomResponse } from './room.interface';
+import { FindRoomsQueryDto } from './dto/FindRoomsQuery.dto';
 
 @Injectable()
 export class RoomService {
@@ -12,21 +13,15 @@ export class RoomService {
     async findByUniversityName(
         universityName: string,
         userId: number,
-        minDeposit: number,
-        maxDeposit: number,
-        minCost: number,
-        maxCost: number,
+        query: FindRoomsQueryDto,
     ): Promise<RoomList> {
         const [rooms, count] = await this.roomRepository.findByUniversityName(
             universityName,
-            minDeposit,
-            maxDeposit,
-            minCost,
-            maxCost,
+            query,
         );
 
         const roomList = await Promise.all(
-            rooms.map((room) => this.roomRepository.toRoom(room, userId)),
+            rooms.map((room) => room.toRoom(userId)),
         );
 
         return { count, rows: roomList };
@@ -42,6 +37,6 @@ export class RoomService {
             throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND);
         }
 
-        return this.roomRepository.toRoom(room, userId);
+        return room.toRoom(userId);
     }
 }

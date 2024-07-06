@@ -10,6 +10,9 @@ import { BaseTimeEntity } from './BaseTimeEntity';
 import { University } from './university.entity';
 import { File } from './file.entity';
 import { User } from './user.entity';
+import { RoomResponse } from '../api/v1/room/room.interface';
+import { instanceToPlain } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 
 @Entity('rooms')
 export class Room extends BaseTimeEntity {
@@ -85,4 +88,19 @@ export class Room extends BaseTimeEntity {
     @ManyToMany(() => User, (user) => user.favorites, { eager: true })
     @JoinTable()
     favoritedBy: User[];
+
+    @IsOptional()
+    isFavorite: boolean;
+
+    toJSON() {
+        return instanceToPlain(this);
+    }
+
+    async toRoom(userId: number): Promise<RoomResponse> {
+        let favorited = false;
+        favorited = this.favoritedBy.map((user) => user._id).includes(userId);
+        const room: any = this.toJSON();
+        delete room.favoritedBy;
+        return { ...room, favorited };
+    }
 }
