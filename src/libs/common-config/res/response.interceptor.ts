@@ -9,20 +9,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Result } from './result';
 
-interface ResponseData {
-    cookies?: {
-        [key: string]: {
-            value: string;
-            options?: Record<string, any>;
-        };
-    };
-    [key: string]: any;
-}
-
 @Injectable()
-export class ResponseInterceptor<T extends ResponseData>
-    implements NestInterceptor<T, any>
-{
+export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
     intercept(
         context: ExecutionContext,
         next: CallHandler<T>,
@@ -32,12 +20,6 @@ export class ResponseInterceptor<T extends ResponseData>
 
         return next.handle().pipe(
             map((data) => {
-                if (data.cookies) {
-                    for (const [name, value] of Object.entries(data.cookies)) {
-                        res.cookie(name, value.value, value.options);
-                    }
-                    delete data.cookies;
-                }
                 const result = Result.ok(data).toJson();
                 res.status(HttpStatus.OK).json(result);
             }),
