@@ -42,6 +42,18 @@ export class RoomService {
         return room.toRoom(userId);
     }
 
+    async findByFavorited(userId: number): Promise<RoomList> {
+        const [rooms, count] = await this.roomRepository.findByFavorited(
+            userId,
+        );
+
+        const roomList = await Promise.all(
+            rooms.map((room) => room.toRoom(userId)),
+        );
+
+        return { count, rows: roomList };
+    }
+
     async favoriteRoom(roomId: number, user: User): Promise<void> {
         const room = await this.roomRepository.findOne({
             where: { _id: roomId },

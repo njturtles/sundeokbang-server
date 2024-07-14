@@ -32,6 +32,12 @@ export class RoomController {
         );
     }
 
+    @Get('/favorites')
+    @UseGuards(JwtAuthGuard)
+    async findByFavorited(@User() user: UserEntity): Promise<RoomList> {
+        return this.roomService.findByFavorited(user._id);
+    }
+
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     async findOneById(
