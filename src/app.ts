@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as httpContext from 'express-http-context';
-import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -15,8 +14,6 @@ async function bootstrap() {
         'http://localhost:3000',
         'https://api.dev.borangkkae.com',
     ];
-
-    app.use(cookieParser());
 
     app.enableCors({
         origin: (origin, callback) => {
