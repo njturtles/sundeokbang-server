@@ -35,11 +35,11 @@ export class AuthController {
     @Post('profile')
     @UseGuards(JwtAuthGuard)
     async postMoreUserInfo(
-        @User() user: Payload,
+        @User() user: UserEntity,
         @Body() profileDto: ProfileUserDto,
     ) {
         const updateUser = await this.userService.updateUserInfo(
-            user.userId,
+            user._id,
             profileDto,
         );
 
