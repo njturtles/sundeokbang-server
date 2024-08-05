@@ -40,9 +40,7 @@ export class RoomService {
     }
 
     async findMyRooms(userId: number): Promise<RoomList> {
-        const [rooms, count] = await this.roomRepository.findAndCountBy({
-            ownerId: userId,
-        });
+        const [rooms, count] = await this.roomRepository.findMyRooms(userId);
 
         const roomList = await Promise.all(
             rooms.map((room) => room.toRoom(userId)),

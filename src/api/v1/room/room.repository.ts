@@ -55,4 +55,23 @@ export class RoomRepository extends Repository<Room> {
             ],
         });
     }
+
+    async findMyRooms(userId: number): Promise<[Room[], number]> {
+        return this.repository.findAndCount({
+            where: {
+                ownerId: userId,
+            },
+            relations: ['files'],
+            select: [
+                '_id',
+                'name',
+                'address',
+                'latitude',
+                'longitude',
+                'contractType',
+                'deposit',
+                'cost',
+            ],
+        });
+    }
 }
