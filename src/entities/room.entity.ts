@@ -82,6 +82,9 @@ export class Room extends BaseTimeEntity {
     @Column()
     owner: string;
 
+    @Column()
+    ownerId: number;
+
     @OneToMany(() => File, (file) => file.room)
     files: File[];
 

@@ -57,13 +57,22 @@ export class EnvironmentVariables {
     AWS_ACCESS_KEY_ID: string;
 
     @IsString()
-    AWS_SECRET_ACCESS_KEY: string;
+    AWS_ACCESS_KEY_SECRET: string;
 
     @IsString()
     AWS_S3_ENDPOINT: string;
 
     @IsString()
-    AWS_REGION: string;
+    AWS_S3_IMAGE_REGION: string;
+
+    @IsString()
+    NAVER_MAP_URL: string;
+
+    @IsString()
+    NAVER_MAP_APIKEY_ID: string;
+
+    @IsString()
+    NAVER_MAP_APIKEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {
