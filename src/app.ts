@@ -13,6 +13,7 @@ async function bootstrap() {
     const allowedOrigins = [
         'http://localhost:3000',
         'https://api.dev.borangkkae.com',
+        'https://borangkkae.com',
     ];
 
     app.enableCors({

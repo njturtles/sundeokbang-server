@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { FileService } from './file.service';
-import { S3Provider } from './s3.provider';
+import { File } from '../../../entities/file.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-    providers: [FileService, S3Provider],
+    providers: [FileService],
+    imports: [TypeOrmModule.forFeature([File])],
+    exports: [FileService],
 })
 export class FileModule {}
