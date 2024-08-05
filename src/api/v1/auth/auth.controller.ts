@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 import { UserService } from '../user/user.service';
-import { Payload } from './jwt/jwt.payload';
 import { AuthService } from './auth.service';
 import { User } from '../../../libs/decorators/user.decorator';
 import { User as UserEntity } from '../../../entities/user.entity';
@@ -23,13 +22,9 @@ export class AuthController {
     @Get('oauth/kakao/callback')
     @UseGuards(AuthGuard('kakao'))
     async kakaoLoginCallBack(@User() user: UserEntity) {
-        const payload: Payload = this.authService.createPayload(user);
+        const payload = this.authService.createPayload(user);
 
-        const accessToken = this.authService.signToken(payload);
-
-        return {
-            cookies: this.authService.getCookie('user', accessToken),
-        };
+        return this.authService.signToken(payload);
     }
 
     @Post('profile')
@@ -43,20 +38,8 @@ export class AuthController {
             profileDto,
         );
 
-        const payload: Payload = this.authService.createPayload(updateUser);
+        const payload = this.authService.createPayload(updateUser);
 
-        const accessToken = this.authService.signToken(payload);
-
-        return {
-            cookies: this.authService.getCookie('user', accessToken),
-        };
-    }
-
-    @Post('logout')
-    @UseGuards(JwtAuthGuard)
-    async logout() {
-        return {
-            cookies: this.authService.getCookie('user', ''),
-        };
+        return this.authService.signToken(payload);
     }
 }

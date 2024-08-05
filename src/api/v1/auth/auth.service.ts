@@ -26,17 +26,4 @@ export class AuthService {
             expiresIn: this.env.get<string>('JWT_EXPIRES_IN'),
         });
     }
-
-    getCookie(name: string, value: string, options: Record<string, any> = {}) {
-        return {
-            [name]: {
-                value,
-                options: {
-                    ...options,
-                    httpOnly: true,
-                    domain: this.env.get<string>('COOKIE_DOMAIN'),
-                },
-            },
-        };
-    }
 }
