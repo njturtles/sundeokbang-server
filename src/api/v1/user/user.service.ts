@@ -17,14 +17,14 @@ export class UserService {
 
     async findOneById(userId: number): Promise<User> {
         return this.userRepository.findOne({
-            where: { _id: userId },
+            where: { _id: userId, deletedAt: null },
             relations: ['university'],
         });
     }
 
     async findOneByProviderId(providerId: string): Promise<User> {
         return this.userRepository.findOne({
-            where: { providerId },
+            where: { providerId, deletedAt: null },
             relations: ['university'],
         });
     }
@@ -57,5 +57,9 @@ export class UserService {
         user.university = universityInfo;
 
         return this.userRepository.save(user);
+    }
+
+    async delete(user: User) {
+        await this.userRepository.softDelete(user._id);
     }
 }
