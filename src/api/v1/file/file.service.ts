@@ -33,4 +33,14 @@ export class FileService {
 
         await this.fileRepository.save(newFiles);
     }
+
+    async delete(roomId: number): Promise<void> {
+        await this.fileRepository.delete({ room: { _id: roomId } });
+    }
+
+    async replace(room: Room, files: Express.MulterS3.File[]) {
+        await this.delete(room._id);
+
+        await this.create(room, files);
+    }
 }

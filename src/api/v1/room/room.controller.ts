@@ -10,6 +10,7 @@ import {
     Body,
     UseInterceptors,
     UploadedFiles,
+    Put,
 } from '@nestjs/common';
 import { RoomService } from './services/room.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
@@ -20,6 +21,7 @@ import { User as UserEntity } from '../../../entities/user.entity';
 import { CreateRoomDto } from './dto/CreateRoom.dto';
 import { FileService } from '../file/file.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { UpdateRoomDto } from './dto/UpdateRoom.dto';
 
 @Controller({ path: 'rooms', version: '1' })
 export class RoomController {
@@ -70,26 +72,53 @@ export class RoomController {
     @UseGuards(JwtAuthGuard)
     async findOneById(
         @User() user: UserEntity,
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id', ParseIntPipe) rooId: number,
     ): Promise<RoomResponse> {
-        return this.roomService.findOneById(id, user._id);
+        return this.roomService.findOneById(rooId, user._id);
+    }
+
+    @Put(':id')
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FilesInterceptor('files'))
+    async updateRoom(
+        @User() user: UserEntity,
+        @Param('id', ParseIntPipe) rooId: number,
+        @UploadedFiles() files: Express.MulterS3.File[],
+        @Body() dto: UpdateRoomDto,
+    ) {
+        const updatedRoom = await this.roomService.updateRoom(
+            dto,
+            user._id,
+            rooId,
+        );
+
+        await this.fileService.replace(updatedRoom, files);
+    }
+
+    @Delete(':id')
+    @UseGuards(JwtAuthGuard)
+    async deleteRoom(
+        @User() user: UserEntity,
+        @Param('id', ParseIntPipe) roomId: number,
+    ) {
+        await this.roomService.deleteRoom(roomId, user._id);
     }
 
     @Post(':id/favorite')
     @UseGuards(JwtAuthGuard)
     async favoriteRoom(
         @User() user: UserEntity,
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id', ParseIntPipe) roomId: number,
     ): Promise<void> {
-        await this.roomService.favoriteRoom(id, user);
+        await this.roomService.favoriteRoom(roomId, user);
     }
 
     @Delete(':id/favorite')
     @UseGuards(JwtAuthGuard)
     async unfavoriteRoom(
         @User() user: UserEntity,
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id', ParseIntPipe) rooId: number,
     ): Promise<void> {
-        await this.roomService.unfavoriteRoom(id, user);
+        await this.roomService.unfavoriteRoom(rooId, user);
     }
 }

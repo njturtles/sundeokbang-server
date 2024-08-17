@@ -7,6 +7,8 @@ export class File extends BaseTimeEntity {
     @Column()
     url: string;
 
-    @ManyToOne(() => Room, (room) => room.files)
+    @ManyToOne(() => Room, (room) => room.files, {
+        onDelete: 'CASCADE',
+    })
     room: Room;
 }

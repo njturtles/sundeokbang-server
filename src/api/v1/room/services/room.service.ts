@@ -12,6 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NaverMapService } from './naverMap.service';
 import { Room } from '../../../../entities/room.entity';
+import { UpdateRoomDto } from '../dto/UpdateRoom.dto';
 
 @Injectable()
 export class RoomService {
@@ -126,5 +127,65 @@ export class RoomService {
             longitude,
         });
         return await this.roomRepository.save(room);
+    }
+
+    async updateRoom(dto: UpdateRoomDto, userId: number, roomId: number) {
+        const room = await this.roomRepository.findOne({
+            where: { _id: roomId },
+        });
+
+        if (!room) {
+            throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
+                message: 'Invalid roomId',
+            });
+        }
+
+        if (room.ownerId !== userId) {
+            throw new ApiError(
+                ApiCodes.UNAUTHORIZED,
+                ApiMessages.UNAUTHORIZED,
+                {
+                    message: 'Invalid owner',
+                },
+            );
+        }
+
+        const coordinates =
+            dto.address && dto.address !== room.address
+                ? await this.naverMapService.getCoordinates(dto.address)
+                : {};
+
+        await this.roomRepository.update(roomId, {
+            ...dto,
+            ...coordinates,
+        });
+
+        return await this.roomRepository.findOne({
+            where: { _id: roomId },
+        });
+    }
+
+    async deleteRoom(roomId: number, userId: number) {
+        const room = await this.roomRepository.findOne({
+            where: { _id: roomId },
+        });
+
+        if (!room) {
+            throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
+                message: 'Room not found',
+            });
+        }
+
+        if (room.ownerId !== userId) {
+            throw new ApiError(
+                ApiCodes.UNAUTHORIZED,
+                ApiMessages.UNAUTHORIZED,
+                {
+                    message: 'Invalid user',
+                },
+            );
+        }
+
+        await this.roomRepository.delete(roomId);
     }
 }

@@ -13,6 +13,6 @@ export const getMysqlTypeOrmModule = TypeOrmModule.forRootAsync({
         password: env.get<string>('DB_PASSWORD'),
         database: env.get<string>('DB_DATABASE'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: false,
+        synchronize: true,
     }),
 });

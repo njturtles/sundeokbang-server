@@ -1,4 +1,16 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Delete, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
+import { User as UserEntity } from '../../../entities/user.entity';
+import { User } from '../../../libs/decorators/user.decorator';
+import { UserService } from './user.service';
 
-@Controller('users')
-export class UserController {}
+@Controller({ path: 'users', version: '1' })
+export class UserController {
+    constructor(private readonly userService: UserService) {}
+
+    @Delete()
+    @UseGuards(JwtAuthGuard)
+    async deleteRoom(@User() user: UserEntity) {
+        await this.userService.delete(user);
+    }
+}
