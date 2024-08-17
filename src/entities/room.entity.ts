@@ -85,7 +85,9 @@ export class Room extends BaseTimeEntity {
     @Column()
     ownerId: number;
 
-    @OneToMany(() => File, (file) => file.room)
+    @OneToMany(() => File, (file) => file.room, {
+        onDelete: 'CASCADE',
+    })
     files: File[];
 
     @ManyToMany(() => User, (user) => user.favorites, { eager: true })
