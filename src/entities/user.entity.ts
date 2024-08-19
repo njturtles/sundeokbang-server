@@ -8,10 +8,10 @@ export class User extends BaseTimeEntity {
     @Column({ nullable: true })
     name: string;
 
-    @Column({ unique: true })
+    @Column()
     providerId: string;
 
-    @Column({ unique: true })
+    @Column()
     email: string;
 
     @ManyToMany(() => Room, (room) => room.favoritedBy)
