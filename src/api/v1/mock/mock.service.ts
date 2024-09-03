@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { rooms } from './room.data';
-import ApiError from '../../../libs/common-config/res/api.error';
-import ApiCodes from '../../../libs/common-config/res/api.codes';
-import ApiMessages from '../../../libs/common-config/res/api.messages';
+import ApiError from '../../../libs/common/res/api.error';
+import ApiCodes from '../../../libs/common/res/api.codes';
+import ApiMessages from '../../../libs/common/res/api.messages';
 import { Room } from './room.interface';
 
 @Injectable()

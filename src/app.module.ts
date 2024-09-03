@@ -5,8 +5,8 @@ import { getMysqlTypeOrmModule } from './getMysqlTypeOrmModule';
 import { ConfigModule } from '@nestjs/config';
 import { V1Module } from './api/v1/v1.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { ResponseInterceptor } from './libs/common-config/res/response.interceptor';
-import { AllExceptionsFilter } from './libs/common-config/filter/http-exception.filter';
+import { ResponseInterceptor } from './libs/common/res/response.interceptor';
+import { AllExceptionsFilter } from './libs/common/filter/http-exception.filter';
 import { ContextMiddleware } from './libs/middleware/request-context/context.middleware';
 import { validate } from './libs/env/env.validation';
 

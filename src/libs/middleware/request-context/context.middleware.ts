@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { RequestContextService } from './request-context.service';
-import ApiHeaders from '../../common-config/res/api.headers';
+import ApiHeaders from '../../common/res/api.headers';
 
 @Injectable()
 export class ContextMiddleware implements NestMiddleware {

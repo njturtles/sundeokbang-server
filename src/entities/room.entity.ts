@@ -13,6 +13,7 @@ import { User } from './user.entity';
 import { RoomResponse } from '../api/v1/room/room.interface';
 import { instanceToPlain } from 'class-transformer';
 import { IsOptional } from 'class-validator';
+import { RoomStateType } from '../libs/common/state.type';
 
 @Entity('rooms')
 export class Room extends BaseTimeEntity {
@@ -84,6 +85,13 @@ export class Room extends BaseTimeEntity {
 
     @Column()
     ownerId: number;
+
+    @Column({
+        type: 'enum',
+        enum: RoomStateType,
+        default: RoomStateType.PENDING,
+    })
+    state: RoomStateType;
 
     @OneToMany(() => File, (file) => file.room, {
         onDelete: 'CASCADE',

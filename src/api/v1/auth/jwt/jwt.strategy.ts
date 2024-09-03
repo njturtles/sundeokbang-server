@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserService } from '../../user/user.service';
-import ApiError from '../../../../libs/common-config/res/api.error';
-import ApiCodes from '../../../../libs/common-config/res/api.codes';
-import ApiMessages from '../../../../libs/common-config/res/api.messages';
+import ApiError from '../../../../libs/common/res/api.error';
+import ApiCodes from '../../../../libs/common/res/api.codes';
+import ApiMessages from '../../../../libs/common/res/api.messages';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

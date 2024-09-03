@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Between, In, Repository } from 'typeorm';
 import { Room } from '../../../entities/room.entity';
 import { FindRoomsQueryDto } from './dto/FindRoomsQuery.dto';
-
+import { RoomStateType } from '../../../libs/common/state.type';
 @Injectable()
 export class RoomRepository extends Repository<Room> {
     constructor(
@@ -22,6 +22,7 @@ export class RoomRepository extends Repository<Room> {
                 university: { name: universityName },
                 deposit: Between(query.minDeposit, query.maxDeposit),
                 cost: Between(query.minCost, query.maxCost),
+                state: RoomStateType.APPROVED,
             },
             relations: ['files'],
             select: [
@@ -41,6 +42,7 @@ export class RoomRepository extends Repository<Room> {
         return this.repository.findAndCount({
             where: {
                 favoritedBy: { _id: In([userId]) },
+                state: RoomStateType.APPROVED,
             },
             relations: ['files'],
             select: [
@@ -71,6 +73,7 @@ export class RoomRepository extends Repository<Room> {
                 'contractType',
                 'deposit',
                 'cost',
+                'state',
             ],
         });
     }
