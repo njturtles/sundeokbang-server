@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../../entities/user.entity';
 import { Repository } from 'typeorm';
 import { University } from '../../../entities/university.entity';
-import ApiError from '../../../libs/common-config/res/api.error';
-import ApiCodes from '../../../libs/common-config/res/api.codes';
-import ApiMessages from '../../../libs/common-config/res/api.messages';
+import ApiError from '../../../libs/common/res/api.error';
+import ApiCodes from '../../../libs/common/res/api.codes';
+import ApiMessages from '../../../libs/common/res/api.messages';
 import { ProfileUserDto } from '../auth/dto/ProfileUser.dto';
 
 @Injectable()

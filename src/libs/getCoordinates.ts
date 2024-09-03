@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-import ApiError from './common-config/res/api.error';
-import ApiCodes from './common-config/res/api.codes';
-import ApiMessages from './common-config/res/api.messages';
+import ApiError from './common/res/api.error';
+import ApiCodes from './common/res/api.codes';
+import ApiMessages from './common/res/api.messages';
 
 export async function getCoordinates(
     address: string,
