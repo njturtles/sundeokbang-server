@@ -14,6 +14,7 @@ async function bootstrap() {
         'http://localhost:3000',
         'https://api.dev.borangkkae.com',
         'https://borangkkae.com',
+        'https://admin.borangkkae.com',
     ];
 
     app.enableCors({
