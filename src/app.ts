@@ -3,9 +3,11 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as httpContext from 'express-http-context';
+import { ClassValidatorExceptionFactory } from './exception/class-validator/exception.factory';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+    const exceptionFactory = new ClassValidatorExceptionFactory();
 
     const env = app.get(ConfigService);
     const port = env.get('APP_PORT');
@@ -39,6 +41,7 @@ async function bootstrap() {
             transform: true,
             whitelist: true,
             forbidNonWhitelisted: true,
+            exceptionFactory: exceptionFactory.throw(),
         }),
     );
 
