@@ -62,4 +62,8 @@ export class UserService {
     async delete(user: User) {
         await this.userRepository.softDelete(user._id);
     }
+
+    async getProfile(user: User) {
+        return await this.userRepository.findOne({where: {_id: user._id}});
+    }
 }
