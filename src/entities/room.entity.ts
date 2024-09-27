@@ -5,6 +5,7 @@ import {
     ManyToOne,
     JoinTable,
     ManyToMany,
+    BeforeUpdate,
 } from 'typeorm';
 import { BaseTimeEntity } from './BaseTimeEntity';
 import { University } from './university.entity';
@@ -104,6 +105,13 @@ export class Room extends BaseTimeEntity {
 
     @IsOptional()
     isFavorite: boolean;
+
+    @BeforeUpdate()
+    setPendingOnUpdate() {
+        if (this.state === RoomStateType.APPROVED) {
+            this.state = RoomStateType.PENDING;
+        }
+    }
 
     toJSON() {
         return instanceToPlain(this);
