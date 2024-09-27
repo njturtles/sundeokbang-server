@@ -155,14 +155,14 @@ export class RoomService {
                 ? await this.naverMapService.getCoordinates(dto.address)
                 : {};
 
-        await this.roomRepository.update(roomId, {
+        Object.assign(room, {
             ...dto,
             ...coordinates,
         });
 
-        return await this.roomRepository.findOne({
-            where: { _id: roomId },
-        });
+        await this.roomRepository.save(room);
+
+        return room;
     }
 
     async deleteRoom(roomId: number, userId: number) {
