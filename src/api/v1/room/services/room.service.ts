@@ -188,4 +188,18 @@ export class RoomService {
 
         await this.roomRepository.delete(roomId);
     }
+
+    async findRoomsByConditions(
+        minDeposit: number | null,
+        maxDeposit: number | null,
+        minCost: number | null,
+        maxCost: number | null,
+    ): Promise<Room[]> {
+        return await this.roomRepository.findRoomsByConditions(
+            minDeposit,
+            maxDeposit,
+            minCost,
+            maxCost,
+        );
+    }
 }
