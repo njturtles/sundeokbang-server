@@ -77,24 +77,4 @@ export class RoomRepository extends Repository<Room> {
             ],
         });
     }
-
-    async findRoomsByConditions(
-        minDeposit: number | null,
-        maxDeposit: number | null,
-        minCost: number | null,
-        maxCost: number | null,
-    ): Promise<Room[]> {
-        const query = this.createQueryBuilder('room');
-
-        if (minDeposit !== null)
-            query.andWhere('room.deposit >= :minDeposit', { minDeposit });
-        if (maxDeposit !== null)
-            query.andWhere('room.deposit <= :maxDeposit', { maxDeposit });
-        if (minCost !== null)
-            query.andWhere('room.cost >= :minCost', { minCost });
-        if (maxCost !== null)
-            query.andWhere('room.cost <= :maxCost', { maxCost });
-
-        return await query.getMany();
-    }
 }

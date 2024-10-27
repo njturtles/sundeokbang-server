@@ -1,4 +1,3 @@
-// src/chatbot/chatbot.controller.ts
 import { Body, Controller, Post, Query, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
@@ -10,7 +9,7 @@ export class ChatController {
     @UseGuards(JwtAuthGuard)
     @Post('')
     async createChat(@Body('message') message: string) {
-        const result = await this.chatService.createChat(message);
+        const result = await this.chatService.getChatbotResponse(message);
         return result;
     }
 }
