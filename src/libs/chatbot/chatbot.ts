@@ -1,12 +1,14 @@
 import OpenAI from 'openai';
+import ApiError from '../common/res/api.error';
+import ApiCodes from '../common/res/api.codes';
+import ApiMessages from '../common/res/api.messages';
 
 export default async function callChatbot(
     usermessage: string,
-    apikey: string,
 ): Promise<string> {
-    const client = new OpenAI({ apiKey: apikey });
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-    const assistantId = 'asst_IJjHbVdQsGzN87N0W1lbn0kE';
+    const assistantId = process.env.ASSISTANT_ID;
 
     const thread = await client.beta.threads.create();
 
@@ -15,20 +17,11 @@ export default async function callChatbot(
         content: usermessage,
     });
 
-    let run;
-    try {
-        run = await client.beta.threads.runs.create(thread.id, {
-            assistant_id: assistantId,
-        });
-    } catch (error: any) {
-        console.error(
-            'Chatbot API call failed:',
-            error.response?.data || error.message,
-        );
-        return '챗봇 API 호출에 실패했습니다.';
-    }
+    let run = await client.beta.threads.runs.create(thread.id, {
+        assistant_id: assistantId,
+    });
 
-    while (['queued', 'in_progress'].includes(run.status)) {
+    while (['queued', 'in_progress', 'cancelling'].includes(run.status)) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         run = await client.beta.threads.runs.retrieve(run.thread_id, run.id);
     }
@@ -45,7 +38,8 @@ export default async function callChatbot(
 
         return results.join('\n');
     } else {
-        console.error('Run failed with status:', run.status);
-        return '챗봇 응답을 불러올 수 없습니다.';
+        throw new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
+            message: '챗봇 응답을 불러올 수 없습니다.',
+        });
     }
 }

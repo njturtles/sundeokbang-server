@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 

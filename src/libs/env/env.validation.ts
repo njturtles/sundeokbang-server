@@ -76,6 +76,9 @@ export class EnvironmentVariables {
 
     @IsString()
     OPENAI_API_KEY: string;
+
+    @IsString()
+    ASSISTANT_ID: string;
 }
 
 export function validate(config: Record<string, unknown>) {
