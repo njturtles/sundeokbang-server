@@ -73,6 +73,12 @@ export class EnvironmentVariables {
 
     @IsString()
     NAVER_MAP_APIKEY: string;
+
+    @IsString()
+    OPENAI_API_KEY: string;
+
+    @IsString()
+    ASSISTANT_ID: string;
 }
 
 export function validate(config: Record<string, unknown>) {
